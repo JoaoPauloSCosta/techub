@@ -10,6 +10,23 @@ useHead({
     lang: 'pt-BR',
     class: computed(() => isDark.value ? 'dark' : '')
   },
+  script: [
+    {
+      innerHTML: `(function() {
+        try {
+          const cookie = document.cookie.split('; ').find(row => row.startsWith('techhub-theme='));
+          const theme = cookie ? cookie.split('=')[1] : 'system';
+          
+          if (theme === 'dark' || (!theme || theme === 'system') && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {}
+      })()`,
+      type: 'text/javascript'
+    }
+  ],
   title: 'TechHub - Modern Vue & AI Ecosystem',
   meta: [
     { name: 'description', content: 'The ultimate resource for modern web developers focusing on the Vue ecosystem and Artificial Intelligence.' }
