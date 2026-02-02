@@ -46,12 +46,12 @@ const formattedDate = computed(() => formatDate(props.post.date))
       </span>
 
       <!-- Title with text gradient on hover -->
-      <h1 class="text-2xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-4 line-clamp-2 leading-tight group-hover:text-primary transition-colors duration-300">
+      <h1 class="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-4 line-clamp-2 leading-tight group-hover:text-primary transition-colors duration-300">
         {{ post.title }}
       </h1>
 
       <!-- Excerpt -->
-      <p class="text-text-secondary text-base md:text-lg mb-6 line-clamp-2 max-w-3xl">
+      <p class="text-gray-200 text-base md:text-lg mb-6 line-clamp-2 max-w-3xl">
         {{ post.excerpt }}
       </p>
 
@@ -69,12 +69,12 @@ const formattedDate = computed(() => formatDate(props.post.date))
             <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-primary border-2 border-dark-bg rounded-full"></span>
           </div>
           <div>
-            <span class="text-text-primary text-sm font-semibold block">{{ post.author.name }}</span>
-            <span v-if="post.author.role" class="text-text-muted text-xs">{{ post.author.role }}</span>
+            <span class="text-white text-sm font-semibold block">{{ post.author.name }}</span>
+            <span v-if="post.author.role" class="text-gray-300 text-xs">{{ post.author.role }}</span>
           </div>
         </div>
 
-        <div class="flex items-center gap-5 text-text-muted text-sm">
+        <div class="flex items-center gap-5 text-gray-300 text-sm">
           <!-- Date -->
           <div class="flex items-center gap-1.5">
             <CalendarIcon class="w-4 h-4" />
@@ -90,7 +90,7 @@ const formattedDate = computed(() => formatDate(props.post.date))
 
         <!-- CTA Button -->
         <span
-          class="hidden md:flex items-center gap-2 ml-auto px-5 py-2.5 bg-dark-card/80 border border-dark-border text-text-primary text-sm font-medium rounded group-hover:bg-primary group-hover:border-primary group-hover:text-dark-bg transition-all duration-300"
+          class="hidden md:flex items-center gap-2 ml-auto px-5 py-2.5 bg-dark-bg/80 border border-white/20 text-white text-sm font-medium rounded group-hover:bg-primary group-hover:border-primary group-hover:text-dark-bg transition-all duration-300"
         >
           <span>Ler artigo</span>
           <ArrowRightIcon class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />

@@ -87,8 +87,8 @@ const filteredJobs = computed<Job[]>(() => {
           <BriefcaseIcon class="w-7 h-7 text-primary" />
         </div>
         <div>
-          <h1 class="text-3xl md:text-4xl font-bold text-text-primary">Vagas em Tech</h1>
-          <p class="text-text-muted text-lg">{{ filteredJobs.length }} vagas disponíveis</p>
+          <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-text-primary">Vagas em Tech</h1>
+          <p class="text-gray-500 dark:text-text-muted text-lg">{{ filteredJobs.length }} vagas disponíveis</p>
         </div>
       </div>
     </div>
@@ -102,12 +102,12 @@ const filteredJobs = computed<Job[]>(() => {
     >
       <!-- Search Bar -->
       <div class="relative max-w-xl">
-        <MagnifyingGlassIcon class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
+        <MagnifyingGlassIcon class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-text-muted" />
         <input
           v-model="searchQuery"
           type="text"
           placeholder="Buscar por cargo, empresa ou tecnologia..."
-          class="w-full pl-12 pr-4 py-3 bg-dark-card border border-dark-border rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-primary/50 transition-all duration-200"
+          class="w-full pl-12 pr-4 py-3 bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-lg text-gray-900 dark:text-text-primary placeholder-gray-400 dark:placeholder-text-muted focus:outline-none focus:border-primary/50 transition-all duration-200"
         />
       </div>
 
@@ -119,8 +119,8 @@ const filteredJobs = computed<Job[]>(() => {
           :class="[
             'px-4 py-2 text-sm font-medium transition-all duration-250 press-effect',
             activeFilter === filter.id
-              ? 'bg-primary text-dark-bg rounded shadow-glow'
-              : 'bg-dark-card border border-dark-border text-text-secondary hover:text-text-primary hover:border-primary/30 rounded'
+              ? 'bg-primary text-white dark:text-dark-bg rounded shadow-glow'
+              : 'bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border text-gray-600 dark:text-text-secondary hover:text-gray-900 dark:hover:text-text-primary hover:border-primary/30 rounded'
           ]"
           @click="activeFilter = filter.id"
         >
@@ -138,23 +138,23 @@ const filteredJobs = computed<Job[]>(() => {
         v-motion
         :initial="{ opacity: 0, y: 20 }"
         :enter="{ opacity: 1, y: 0, transition: { delay: 150 + index * 50 } }"
-        class="block bg-dark-card border border-dark-border rounded-lg p-6 hover:border-primary/30 hover:shadow-card-hover transition-all duration-300 group"
+        class="block bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-lg p-6 hover:border-primary/30 hover:shadow-card-hover transition-all duration-300 group"
       >
         <div class="flex flex-col md:flex-row md:items-center gap-4">
           <!-- Company Logo -->
-          <div v-if="job.companyLogo" class="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 border border-dark-border">
+          <div v-if="job.companyLogo" class="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 border border-gray-200 dark:border-dark-border">
             <img :src="job.companyLogo" :alt="job.company" class="w-full h-full object-cover" />
           </div>
-          <div v-else class="w-14 h-14 bg-dark-hover border border-dark-border rounded-lg flex items-center justify-center flex-shrink-0">
-            <BuildingOfficeIcon class="w-7 h-7 text-text-muted" />
+          <div v-else class="w-14 h-14 bg-gray-100 dark:bg-dark-hover border border-gray-200 dark:border-dark-border rounded-lg flex items-center justify-center flex-shrink-0">
+            <BuildingOfficeIcon class="w-7 h-7 text-gray-400 dark:text-text-muted" />
           </div>
 
           <!-- Job Info -->
           <div class="flex-1 min-w-0">
-            <h2 class="text-lg font-semibold text-text-primary group-hover:text-primary transition-colors mb-1 truncate">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-text-primary group-hover:text-primary transition-colors mb-1 truncate">
               {{ job.title }}
             </h2>
-            <div class="flex flex-wrap items-center gap-4 text-text-muted text-sm mb-3">
+            <div class="flex flex-wrap items-center gap-4 text-gray-500 dark:text-text-muted text-sm mb-3">
               <div class="flex items-center gap-1.5">
                 <BuildingOfficeIcon class="w-4 h-4" />
                 <span>{{ job.company }}</span>
@@ -183,7 +183,7 @@ const filteredJobs = computed<Job[]>(() => {
                 <span
                   v-for="tag in job.tags.slice(0, 4)"
                   :key="tag"
-                  class="px-2 py-0.5 bg-dark-hover text-text-muted text-xs rounded"
+                  class="px-2 py-0.5 bg-gray-100 dark:bg-dark-hover text-gray-500 dark:text-text-muted text-xs rounded"
                 >
                   {{ tag }}
                 </span>
@@ -193,7 +193,7 @@ const filteredJobs = computed<Job[]>(() => {
 
           <!-- Right Side -->
           <div class="flex flex-col items-end gap-2 flex-shrink-0">
-            <span class="text-text-muted text-xs">{{ formatDate(job.date) }}</span>
+            <span class="text-gray-400 dark:text-text-muted text-xs">{{ formatDate(job.date) }}</span>
             <div class="flex items-center gap-2 text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
               <span>Ver vaga</span>
               <ArrowTopRightOnSquareIcon class="w-4 h-4" />
@@ -207,9 +207,9 @@ const filteredJobs = computed<Job[]>(() => {
         v-if="filteredJobs.length === 0"
         class="text-center py-20"
       >
-        <BriefcaseIcon class="w-16 h-16 text-text-muted mx-auto mb-4" />
-        <h3 class="text-xl font-semibold text-text-primary mb-2">Nenhuma vaga encontrada</h3>
-        <p class="text-text-muted">Tente ajustar os filtros ou buscar por outro termo.</p>
+        <BriefcaseIcon class="w-16 h-16 text-gray-400 dark:text-text-muted mx-auto mb-4" />
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-text-primary mb-2">Nenhuma vaga encontrada</h3>
+        <p class="text-gray-500 dark:text-text-muted">Tente ajustar os filtros ou buscar por outro termo.</p>
       </div>
     </div>
   </div>

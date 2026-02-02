@@ -1,4 +1,4 @@
-import type { TrendingTopic } from '~/shared/types'
+import type { TrendingTopic } from '#shared/types'
 
 // TODO: Replace mock data with useFetch() API calls
 

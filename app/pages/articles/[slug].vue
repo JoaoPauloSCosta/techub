@@ -67,11 +67,11 @@ useSeoMeta({
     <!-- 404 State -->
     <div v-if="!article" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
       <div class="text-6xl mb-6">📄</div>
-      <h1 class="text-2xl font-bold text-text-primary mb-4">Artigo não encontrado</h1>
-      <p class="text-text-muted mb-8">O artigo que você procura não existe ou foi removido.</p>
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-text-primary mb-4">Artigo não encontrado</h1>
+      <p class="text-gray-500 dark:text-text-muted mb-8">O artigo que você procura não existe ou foi removido.</p>
       <NuxtLink
         to="/"
-        class="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-hover text-dark-bg font-semibold rounded-lg transition-all duration-200 press-effect"
+        class="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-hover text-white dark:text-dark-bg font-semibold rounded-lg transition-all duration-200 press-effect"
       >
         <ArrowLeftIcon class="w-5 h-5" />
         Voltar para a home
@@ -86,7 +86,7 @@ useSeoMeta({
         v-motion
         :initial="{ opacity: 0, x: -10 }"
         :enter="{ opacity: 1, x: 0 }"
-        class="inline-flex items-center gap-2 text-text-muted hover:text-primary transition-colors mb-6"
+        class="inline-flex items-center gap-2 text-gray-500 dark:text-text-muted hover:text-primary transition-colors mb-6"
       >
         <ArrowLeftIcon class="w-4 h-4" />
         Voltar para a home
@@ -110,21 +110,20 @@ useSeoMeta({
             <ArticleBody :content="article.content" />
           </div>
 
-          <!-- Tags -->
           <div
             v-if="article.tags && article.tags.length > 0"
             v-motion
             :initial="{ opacity: 0, y: 20 }"
             :enter="{ opacity: 1, y: 0, transition: { delay: 300 } }"
-            class="mt-10 pt-8 border-t border-dark-border"
+            class="mt-10 pt-8 border-t border-gray-200 dark:border-dark-border"
           >
-            <h3 class="text-sm font-semibold text-text-muted uppercase tracking-wide mb-3">Tags</h3>
+            <h3 class="text-sm font-semibold text-gray-500 dark:text-text-muted uppercase tracking-wide mb-3">Tags</h3>
             <div class="flex flex-wrap gap-2">
               <NuxtLink
                 v-for="tag in article.tags"
                 :key="tag"
                 :to="`/tags/${tag}`"
-                class="px-3 py-1.5 bg-dark-hover border border-dark-border text-text-secondary text-sm rounded-lg hover:border-primary/30 hover:text-primary transition-all duration-200"
+                class="px-3 py-1.5 bg-gray-100 dark:bg-dark-hover border border-gray-200 dark:border-dark-border text-gray-600 dark:text-text-secondary text-sm rounded-lg hover:border-primary/30 hover:text-primary transition-all duration-200"
               >
                 #{{ tag }}
               </NuxtLink>

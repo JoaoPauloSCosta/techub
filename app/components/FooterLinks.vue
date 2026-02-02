@@ -80,7 +80,7 @@ const companyLinks = [
             <!-- Email/@ Icon -->
             <a
               href="mailto:contact@techhub.com"
-              class="w-10 h-10 bg-dark-card border border-dark-border rounded-lg flex items-center justify-center text-text-muted hover:text-primary hover:border-primary/30 transition-all duration-200"
+              class="w-10 h-10 bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-lg flex items-center justify-center text-gray-500 dark:text-text-muted hover:text-primary hover:border-primary/30 transition-all duration-200"
               aria-label="Email"
             >
               <AtSymbolIcon class="w-5 h-5" />
@@ -88,7 +88,7 @@ const companyLinks = [
             <!-- RSS Icon -->
             <a
               href="/rss"
-              class="w-10 h-10 bg-dark-card border border-dark-border rounded-lg flex items-center justify-center text-text-muted hover:text-primary hover:border-primary/30 transition-all duration-200"
+              class="w-10 h-10 bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-lg flex items-center justify-center text-gray-500 dark:text-text-muted hover:text-primary hover:border-primary/30 transition-all duration-200"
               aria-label="RSS Feed"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,7 +100,7 @@ const companyLinks = [
               href="https://youtube.com"
               target="_blank"
               rel="noopener noreferrer"
-              class="w-10 h-10 bg-dark-card border border-dark-border rounded-lg flex items-center justify-center text-text-muted hover:text-primary hover:border-primary/30 transition-all duration-200"
+              class="w-10 h-10 bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-lg flex items-center justify-center text-gray-500 dark:text-text-muted hover:text-primary hover:border-primary/30 transition-all duration-200"
               aria-label="YouTube"
             >
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

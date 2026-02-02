@@ -43,14 +43,14 @@ const copyLink = async (): Promise<void> => {
 </script>
 
 <template>
-  <div id="social-share" class="bg-dark-card border border-dark-border rounded-lg p-5">
-    <h3 class="text-lg font-bold text-text-primary mb-4">Compartilhar</h3>
+  <div id="social-share" class="bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-lg p-5">
+    <h3 class="text-lg font-bold text-gray-900 dark:text-text-primary mb-4">Compartilhar</h3>
 
     <div class="flex flex-wrap gap-2">
       <!-- Twitter/X -->
       <button
         type="button"
-        class="flex items-center justify-center w-10 h-10 bg-dark-hover border border-dark-border rounded-lg text-text-muted hover:text-[#1DA1F2] hover:border-[#1DA1F2]/30 transition-all duration-200 press-effect"
+        class="flex items-center justify-center w-10 h-10 bg-gray-100 dark:bg-dark-hover border border-gray-200 dark:border-dark-border rounded-lg text-gray-500 dark:text-text-muted hover:text-[#1DA1F2] hover:border-[#1DA1F2]/30 transition-all duration-200 press-effect"
         aria-label="Compartilhar no Twitter"
         @click="shareTwitter"
       >
@@ -62,7 +62,7 @@ const copyLink = async (): Promise<void> => {
       <!-- LinkedIn -->
       <button
         type="button"
-        class="flex items-center justify-center w-10 h-10 bg-dark-hover border border-dark-border rounded-lg text-text-muted hover:text-[#0A66C2] hover:border-[#0A66C2]/30 transition-all duration-200 press-effect"
+        class="flex items-center justify-center w-10 h-10 bg-gray-100 dark:bg-dark-hover border border-gray-200 dark:border-dark-border rounded-lg text-gray-500 dark:text-text-muted hover:text-[#0A66C2] hover:border-[#0A66C2]/30 transition-all duration-200 press-effect"
         aria-label="Compartilhar no LinkedIn"
         @click="shareLinkedIn"
       >
@@ -74,7 +74,7 @@ const copyLink = async (): Promise<void> => {
       <!-- Facebook -->
       <button
         type="button"
-        class="flex items-center justify-center w-10 h-10 bg-dark-hover border border-dark-border rounded-lg text-text-muted hover:text-[#1877F2] hover:border-[#1877F2]/30 transition-all duration-200 press-effect"
+        class="flex items-center justify-center w-10 h-10 bg-gray-100 dark:bg-dark-hover border border-gray-200 dark:border-dark-border rounded-lg text-gray-500 dark:text-text-muted hover:text-[#1877F2] hover:border-[#1877F2]/30 transition-all duration-200 press-effect"
         aria-label="Compartilhar no Facebook"
         @click="shareFacebook"
       >
@@ -90,7 +90,7 @@ const copyLink = async (): Promise<void> => {
           'flex items-center justify-center w-10 h-10 border rounded-lg transition-all duration-200 press-effect',
           copied
             ? 'bg-success/10 border-success/30 text-success'
-            : 'bg-dark-hover border-dark-border text-text-muted hover:text-primary hover:border-primary/30'
+            : 'bg-gray-100 dark:bg-dark-hover border-gray-200 dark:border-dark-border text-gray-500 dark:text-text-muted hover:text-primary hover:border-primary/30'
         ]"
         aria-label="Copiar link"
         @click="copyLink"

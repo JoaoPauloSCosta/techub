@@ -31,6 +31,24 @@ export default defineNuxtConfig({
       title: 'TechHub - Notícias de Tecnologia',
       meta: [
         { name: 'description', content: 'Seu portal de tecnologia com foco em Vue.js, Nuxt, IA e desenvolvimento moderno.' }
+      ],
+      script: [
+        {
+          // Script inline para aplicar tema antes da hidratação (anti-flicker)
+          innerHTML: `
+            (function() {
+              const saved = localStorage.getItem('techub-theme');
+              const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+              const theme = saved || (prefersDark ? 'dark' : 'light');
+              if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+              } else {
+                document.documentElement.classList.remove('dark');
+              }
+            })();
+          `,
+          type: 'text/javascript'
+        }
       ]
     }
   }

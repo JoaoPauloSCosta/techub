@@ -16,7 +16,7 @@ const isSearchFocused = ref<boolean>(false)
 const { isDark, toggleTheme } = useTheme()
 
 const menuItems = [
-  { label: 'News', href: '/news' },
+  { label: 'News', href: '/articles' },
   { label: 'Tutorials', href: '/tutorials' },
   { label: 'Videos', href: '/videos' },
   { label: 'Jobs', href: '/jobs' }

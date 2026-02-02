@@ -27,7 +27,7 @@ const navItems: NavItem[] = [
   { id: 'hub', label: 'HUB', href: '/', icon: markRaw(HomeIcon), iconActive: markRaw(HomeIconSolid) },
   { id: 'topics', label: 'TOPICS', href: '/topics', icon: markRaw(TagIcon), iconActive: markRaw(TagIconSolid) },
   { id: 'watch', label: 'WATCH', href: '/videos', icon: markRaw(PlayCircleIcon), iconActive: markRaw(PlayCircleIconSolid) },
-  { id: 'jobs', label: 'JOBS', href: '/vagas', icon: markRaw(BriefcaseIcon), iconActive: markRaw(BriefcaseIconSolid) }
+  { id: 'jobs', label: 'JOBS', href: '/jobs', icon: markRaw(BriefcaseIcon), iconActive: markRaw(BriefcaseIconSolid) }
 ]
 
 const setActive = (id: string): void => {

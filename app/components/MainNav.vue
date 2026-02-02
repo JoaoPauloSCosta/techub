@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { Category } from '~/shared/types'
+import type { Category } from '#shared/types'
 
 const activeCategory = ref<string>('all')
 

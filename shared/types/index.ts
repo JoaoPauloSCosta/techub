@@ -31,6 +31,7 @@ export interface Video {
     views?: number
     date: string
     tags: string[]
+    url?: string
 }
 
 export interface Job {

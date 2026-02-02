@@ -121,7 +121,7 @@ const mockPosts: Post[] = [
         title: 'OpenAI lança GPT-5: O que muda para desenvolvedores',
         excerpt: 'Nova versão do modelo promete capacidades avançadas de codificação e melhor entendimento de contexto.',
         content: articleContent,
-        image: 'https://images.unsplash.com/photo-1676299081847-c3c9b2f7869a?w=800&h=450&fit=crop',
+        image: 'https://images.unsplash.com/photo-1679083216051-aa510a1a2c0e?w=800&h=450&fit=crop',
         category: 'IA News',
         date: '2026-01-25T16:45:00Z',
         readTime: 5,

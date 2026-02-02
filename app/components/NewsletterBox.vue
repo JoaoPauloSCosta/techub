@@ -37,7 +37,7 @@ const handleSubmit = async (): Promise<void> => {
       </div>
 
       <!-- Title -->
-      <h3 class="text-lg font-bold text-text-primary mb-2">
+      <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">
         Newsletter TechHub
       </h3>
 
@@ -48,11 +48,11 @@ const handleSubmit = async (): Promise<void> => {
 
       <!-- Benefit pills -->
       <div class="flex flex-wrap gap-2 mb-5">
-        <span class="inline-flex items-center gap-1 px-2 py-1 bg-dark-hover text-text-muted text-xs rounded">
+        <span class="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 dark:bg-dark-hover text-gray-600 dark:text-text-muted text-xs rounded">
           <SparklesIcon class="w-3 h-3 text-primary" />
           Curadoria exclusiva
         </span>
-        <span class="inline-flex items-center gap-1 px-2 py-1 bg-dark-hover text-text-muted text-xs rounded">
+        <span class="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 dark:bg-dark-hover text-gray-600 dark:text-text-muted text-xs rounded">
           <SparklesIcon class="w-3 h-3 text-primary" />
           Sem spam
         </span>
@@ -93,7 +93,7 @@ const handleSubmit = async (): Promise<void> => {
       >
         <CheckCircleIcon class="w-8 h-8 text-primary" />
       </div>
-      <h3 class="text-lg font-bold text-text-primary mb-2">
+      <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">
         Inscrito com sucesso! 🎉
       </h3>
       <p class="text-gray-500 text-sm">

@@ -3,6 +3,7 @@ import { useSeoMeta } from '#imports'
 import HeroFeatured from '~/components/HeroFeatured.vue'
 import PostCard from '~/components/PostCard.vue'
 import VideoCard from '~/components/VideoCard.vue'
+import VideoPlayerModal from '~/components/VideoPlayerModal.vue'
 import JobsList from '~/components/JobsList.vue'
 import NewsletterBox from '~/components/NewsletterBox.vue'
 import SidebarTrends from '~/components/SidebarTrends.vue'
@@ -11,6 +12,7 @@ import { useVideos } from '~/composables/useVideos'
 import { useJobs } from '~/composables/useJobs'
 import { useTrending } from '~/composables/useTrending'
 import { SparklesIcon, PlayCircleIcon, NewspaperIcon } from '@heroicons/vue/24/outline'
+import type { Video } from '#shared/types'
 
 // SEO Meta
 useSeoMeta({
@@ -33,6 +35,20 @@ const latestPosts = getLatestPosts(6)
 const videos = getVideos(4)
 const jobs = getJobs(5)
 const trendingTopics = getTrending(5)
+
+// Video modal state
+const selectedVideo = ref<Video | null>(null)
+const isVideoModalOpen = ref(false)
+
+const handleVideoPlay = (video: Video) => {
+  selectedVideo.value = video
+  isVideoModalOpen.value = true
+}
+
+const handleVideoModalClose = () => {
+  isVideoModalOpen.value = false
+  selectedVideo.value = null
+}
 
 // Define layout
 definePageMeta({
@@ -141,6 +157,7 @@ definePageMeta({
                 :key="video.id"
                 :video="video"
                 :index="index"
+                @play="handleVideoPlay"
               />
             </div>
           </section>
@@ -166,13 +183,13 @@ definePageMeta({
               v-motion
               :initial="{ opacity: 0, y: 20 }"
               :enter="{ opacity: 1, y: 0, transition: { delay: 300 } }"
-              class="bg-dark-card border border-dark-border rounded p-6"
+              class="bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded p-6"
             >
-              <span class="text-text-muted text-xs uppercase tracking-widest font-medium">Patrocinado</span>
-              <div class="mt-4 aspect-video bg-dark-hover border border-dark-border rounded flex items-center justify-center">
-                <span class="text-text-muted text-sm">Espaço publicitário</span>
+              <span class="text-gray-500 dark:text-text-muted text-xs uppercase tracking-widest font-medium">Patrocinado</span>
+              <div class="mt-4 aspect-video bg-gray-100 dark:bg-dark-hover border border-gray-200 dark:border-dark-border rounded flex items-center justify-center">
+                <span class="text-gray-500 dark:text-text-muted text-sm">Espaço publicitário</span>
               </div>
-              <p class="text-text-muted text-xs mt-3 text-center">
+              <p class="text-gray-500 dark:text-text-muted text-xs mt-3 text-center">
                 <a href="/anuncie" class="text-primary hover:text-primary-light transition-colors">Anuncie aqui</a>
               </p>
             </div>
@@ -182,15 +199,15 @@ definePageMeta({
               v-motion
               :initial="{ opacity: 0, y: 20 }"
               :enter="{ opacity: 1, y: 0, transition: { delay: 400 } }"
-              class="bg-dark-card border border-dark-border rounded p-6"
+              class="bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded p-6"
             >
-              <h3 class="text-lg font-bold text-text-primary mb-4">Tags Populares</h3>
+              <h3 class="text-lg font-bold text-gray-900 dark:text-text-primary mb-4">Tags Populares</h3>
               <div class="flex flex-wrap gap-2">
                 <a
                   v-for="tag in ['Vue.js', 'Nuxt', 'TypeScript', 'IA', 'PHP', 'Laravel', 'Remoto']"
                   :key="tag"
                   href="#"
-                  class="px-3 py-1.5 bg-dark-hover border border-dark-border hover:border-primary/30 text-text-secondary hover:text-primary rounded text-sm transition-all duration-200"
+                  class="px-3 py-1.5 bg-gray-100 dark:bg-dark-hover border border-gray-200 dark:border-dark-border hover:border-primary/30 text-gray-600 dark:text-text-secondary hover:text-primary rounded text-sm transition-all duration-200"
                 >
                   {{ tag }}
                 </a>
@@ -200,5 +217,12 @@ definePageMeta({
         </aside>
       </div>
     </div>
+
+    <!-- Video Player Modal -->
+    <VideoPlayerModal
+      :video="selectedVideo"
+      :is-open="isVideoModalOpen"
+      @close="handleVideoModalClose"
+    />
   </div>
 </template>

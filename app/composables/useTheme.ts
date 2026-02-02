@@ -1,6 +1,5 @@
 import type { Ref, ComputedRef } from 'vue'
-import { useState, onMounted, computed } from '#imports'
-import { getPreferredTheme } from '../utils/getPreferredTheme'
+import { useState, computed, watch } from '#imports'
 
 export type Theme = 'dark' | 'light'
 
@@ -12,16 +11,89 @@ interface ThemeComposable {
     initTheme: () => void
 }
 
+const STORAGE_KEY = 'techub-theme'
+
+/**
+ * Obtém o tema preferido do sistema operacional
+ */
+const getSystemPreference = (): Theme => {
+    if (typeof window !== 'undefined' && window.matchMedia) {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    }
+    return 'dark'
+}
+
+/**
+ * Aplica a classe dark/light no <html> diretamente
+ */
+const applyThemeToDOM = (theme: Theme): void => {
+    if (typeof document !== 'undefined') {
+        const html = document.documentElement
+        if (theme === 'dark') {
+            html.classList.add('dark')
+            html.classList.remove('light')
+        } else {
+            html.classList.remove('dark')
+            html.classList.add('light')
+        }
+    }
+}
+
+/**
+ * Lê o tema salvo no localStorage
+ */
+const getSavedTheme = (): Theme | null => {
+    if (typeof localStorage !== 'undefined') {
+        const saved = localStorage.getItem(STORAGE_KEY)
+        if (saved === 'dark' || saved === 'light') {
+            return saved
+        }
+    }
+    return null
+}
+
+/**
+ * Salva o tema no localStorage
+ */
+const saveTheme = (theme: Theme): void => {
+    if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(STORAGE_KEY, theme)
+    }
+}
+
+/**
+ * Composable para gerenciar o tema (Dark/Light Mode)
+ * 
+ * Hierarquia de inicialização:
+ * 1º - Valor salvo no localStorage
+ * 2º - Preferência do sistema (prefers-color-scheme)
+ * 3º - Fallback: 'dark'
+ */
 export const useTheme = (): ThemeComposable => {
-    const theme = useState<Theme>('theme', () => 'dark')
+    // Inicializa com valor do localStorage se disponível (client-side)
+    const getInitialTheme = (): Theme => {
+        if (typeof window !== 'undefined') {
+            const saved = getSavedTheme()
+            if (saved) return saved
+            return getSystemPreference()
+        }
+        return 'dark' // SSR fallback
+    }
+
+    const theme = useState<Theme>('theme', getInitialTheme)
 
     const isDark = computed<boolean>(() => theme.value === 'dark')
 
+    // Watch para atualizar DOM e localStorage quando o tema muda
+    if (typeof window !== 'undefined') {
+        watch(theme, (newTheme) => {
+            applyThemeToDOM(newTheme)
+            saveTheme(newTheme)
+        }, { immediate: true })
+    }
+
     const setTheme = (next: Theme): void => {
         theme.value = next
-        if (typeof localStorage !== 'undefined') {
-            localStorage.setItem('techhub-theme', next)
-        }
     }
 
     const toggleTheme = (): void => {
@@ -29,15 +101,18 @@ export const useTheme = (): ThemeComposable => {
     }
 
     const initTheme = (): void => {
-        if (typeof localStorage !== 'undefined') {
-            const saved = localStorage.getItem('techhub-theme') as Theme | null
-            if (saved && (saved === 'dark' || saved === 'light')) {
-                setTheme(saved)
-            } else {
-                const preferred = getPreferredTheme()
-                setTheme(preferred)
-            }
+        if (typeof window === 'undefined') return
+
+        // Hierarquia: localStorage > sistema > fallback
+        const saved = getSavedTheme()
+        if (saved) {
+            theme.value = saved
+        } else {
+            theme.value = getSystemPreference()
         }
+
+        // Garante que o DOM está sincronizado
+        applyThemeToDOM(theme.value)
     }
 
     return {

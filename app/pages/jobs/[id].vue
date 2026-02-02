@@ -83,10 +83,10 @@ const benefits = [
   <div id="job-detail-page">
     <!-- Job Not Found -->
     <div v-if="!job" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-      <BuildingOfficeIcon class="w-20 h-20 text-text-muted mx-auto mb-6" />
-      <h1 class="text-2xl font-bold text-text-primary mb-4">Vaga não encontrada</h1>
-      <p class="text-text-muted mb-8">A vaga que você procura não existe ou foi removida.</p>
-      <NuxtLink to="/jobs" class="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-hover text-dark-bg font-semibold rounded-lg transition-all duration-200 press-effect">
+      <BuildingOfficeIcon class="w-20 h-20 text-gray-400 dark:text-text-muted mx-auto mb-6" />
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-text-primary mb-4">Vaga não encontrada</h1>
+      <p class="text-gray-500 dark:text-text-muted mb-8">A vaga que você procura não existe ou foi removida.</p>
+      <NuxtLink to="/jobs" class="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-hover text-white dark:text-dark-bg font-semibold rounded-lg transition-all duration-200 press-effect">
         <ArrowLeftIcon class="w-5 h-5" />
         Ver todas as vagas
       </NuxtLink>
@@ -100,7 +100,7 @@ const benefits = [
         v-motion
         :initial="{ opacity: 0, x: -10 }"
         :enter="{ opacity: 1, x: 0 }"
-        class="inline-flex items-center gap-2 text-text-muted hover:text-primary transition-colors mb-6"
+        class="inline-flex items-center gap-2 text-gray-500 dark:text-text-muted hover:text-primary transition-colors mb-6"
       >
         <ArrowLeftIcon class="w-4 h-4" />
         Voltar para vagas
@@ -114,23 +114,23 @@ const benefits = [
             v-motion
             :initial="{ opacity: 0, y: 20 }"
             :enter="{ opacity: 1, y: 0, transition: { type: 'spring', stiffness: 200, damping: 25 } }"
-            class="bg-dark-card border border-dark-border rounded-lg p-6 md:p-8"
+            class="bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-lg p-6 md:p-8"
           >
             <div class="flex flex-col md:flex-row gap-6">
               <!-- Company Logo -->
-              <div v-if="job.companyLogo" class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border border-dark-border">
+              <div v-if="job.companyLogo" class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border border-gray-200 dark:border-dark-border">
                 <img :src="job.companyLogo" :alt="job.company" class="w-full h-full object-cover" />
               </div>
-              <div v-else class="w-20 h-20 bg-dark-hover border border-dark-border rounded-lg flex items-center justify-center flex-shrink-0">
-                <BuildingOfficeIcon class="w-10 h-10 text-text-muted" />
+              <div v-else class="w-20 h-20 bg-gray-100 dark:bg-dark-hover border border-gray-200 dark:border-dark-border rounded-lg flex items-center justify-center flex-shrink-0">
+                <BuildingOfficeIcon class="w-10 h-10 text-gray-400 dark:text-text-muted" />
               </div>
 
               <!-- Job Info -->
               <div class="flex-1">
                 <div class="flex items-start justify-between gap-4 flex-wrap">
                   <div>
-                    <h1 class="text-2xl md:text-3xl font-bold text-text-primary mb-2">{{ job.title }}</h1>
-                    <p class="text-text-secondary text-lg mb-4">{{ job.company }}</p>
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-text-primary mb-2">{{ job.title }}</h1>
+                    <p class="text-gray-600 dark:text-text-secondary text-lg mb-4">{{ job.company }}</p>
                   </div>
                   <span
                     :class="[
@@ -143,7 +143,7 @@ const benefits = [
                 </div>
 
                 <!-- Meta Info -->
-                <div class="flex flex-wrap items-center gap-5 text-text-muted text-sm">
+                <div class="flex flex-wrap items-center gap-5 text-gray-500 dark:text-text-muted text-sm">
                   <div class="flex items-center gap-1.5">
                     <MapPinIcon class="w-4 h-4" />
                     <span>{{ job.location }}</span>
@@ -163,7 +163,7 @@ const benefits = [
                   <span
                     v-for="tag in job.tags"
                     :key="tag"
-                    class="px-3 py-1 bg-dark-hover border border-dark-border text-text-secondary text-sm rounded"
+                    class="px-3 py-1 bg-gray-100 dark:bg-dark-hover border border-gray-200 dark:border-dark-border text-gray-600 dark:text-text-secondary text-sm rounded"
                   >
                     {{ tag }}
                   </span>
@@ -177,10 +177,10 @@ const benefits = [
             v-motion
             :initial="{ opacity: 0, y: 20 }"
             :enter="{ opacity: 1, y: 0, transition: { delay: 100 } }"
-            class="bg-dark-card border border-dark-border rounded-lg p-6 md:p-8"
+            class="bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-lg p-6 md:p-8"
           >
-            <h2 class="text-xl font-bold text-text-primary mb-4">Sobre a Empresa</h2>
-            <p class="text-text-secondary leading-relaxed">{{ aboutCompany }}</p>
+            <h2 class="text-xl font-bold text-gray-900 dark:text-text-primary mb-4">Sobre a Empresa</h2>
+            <p class="text-gray-600 dark:text-text-secondary leading-relaxed">{{ aboutCompany }}</p>
           </div>
 
           <!-- Responsibilities -->
@@ -188,11 +188,11 @@ const benefits = [
             v-motion
             :initial="{ opacity: 0, y: 20 }"
             :enter="{ opacity: 1, y: 0, transition: { delay: 150 } }"
-            class="bg-dark-card border border-dark-border rounded-lg p-6 md:p-8"
+            class="bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-lg p-6 md:p-8"
           >
-            <h2 class="text-xl font-bold text-text-primary mb-4">Responsabilidades</h2>
+            <h2 class="text-xl font-bold text-gray-900 dark:text-text-primary mb-4">Responsabilidades</h2>
             <ul class="space-y-3">
-              <li v-for="item in responsibilities" :key="item" class="flex items-start gap-3 text-text-secondary">
+              <li v-for="item in responsibilities" :key="item" class="flex items-start gap-3 text-gray-600 dark:text-text-secondary">
                 <CheckCircleIcon class="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                 <span>{{ item }}</span>
               </li>
@@ -204,11 +204,11 @@ const benefits = [
             v-motion
             :initial="{ opacity: 0, y: 20 }"
             :enter="{ opacity: 1, y: 0, transition: { delay: 200 } }"
-            class="bg-dark-card border border-dark-border rounded-lg p-6 md:p-8"
+            class="bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-lg p-6 md:p-8"
           >
-            <h2 class="text-xl font-bold text-text-primary mb-4">Requisitos</h2>
+            <h2 class="text-xl font-bold text-gray-900 dark:text-text-primary mb-4">Requisitos</h2>
             <ul class="space-y-3">
-              <li v-for="item in requirements" :key="item" class="flex items-start gap-3 text-text-secondary">
+              <li v-for="item in requirements" :key="item" class="flex items-start gap-3 text-gray-600 dark:text-text-secondary">
                 <CheckCircleIcon class="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
                 <span>{{ item }}</span>
               </li>
@@ -220,11 +220,11 @@ const benefits = [
             v-motion
             :initial="{ opacity: 0, y: 20 }"
             :enter="{ opacity: 1, y: 0, transition: { delay: 250 } }"
-            class="bg-dark-card border border-dark-border rounded-lg p-6 md:p-8"
+            class="bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-lg p-6 md:p-8"
           >
-            <h2 class="text-xl font-bold text-text-primary mb-4">Benefícios</h2>
+            <h2 class="text-xl font-bold text-gray-900 dark:text-text-primary mb-4">Benefícios</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div v-for="item in benefits" :key="item" class="flex items-center gap-3 text-text-secondary bg-dark-hover rounded-lg p-3">
+              <div v-for="item in benefits" :key="item" class="flex items-center gap-3 text-gray-600 dark:text-text-secondary bg-gray-50 dark:bg-dark-hover rounded-lg p-3">
                 <CheckCircleIcon class="w-5 h-5 text-success flex-shrink-0" />
                 <span>{{ item }}</span>
               </div>
@@ -240,23 +240,23 @@ const benefits = [
               v-motion
               :initial="{ opacity: 0, y: 20 }"
               :enter="{ opacity: 1, y: 0, transition: { delay: 100 } }"
-              class="bg-dark-card border border-dark-border rounded-lg p-6"
+              class="bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-lg p-6"
             >
               <a
                 :href="job.url || '#'"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="w-full flex items-center justify-center gap-2 px-6 py-4 bg-primary hover:bg-primary-hover text-dark-bg font-bold rounded-lg transition-all duration-200 press-effect shadow-glow hover:shadow-glow-lg mb-4"
+                class="w-full flex items-center justify-center gap-2 px-6 py-4 bg-primary hover:bg-primary-hover text-white dark:text-dark-bg font-bold rounded-lg transition-all duration-200 press-effect shadow-glow hover:shadow-glow-lg mb-4"
               >
                 Candidatar-se
                 <ArrowTopRightOnSquareIcon class="w-5 h-5" />
               </a>
               <div class="flex gap-2">
-                <button class="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-dark-hover border border-dark-border text-text-secondary hover:text-text-primary hover:border-primary/30 rounded-lg transition-all duration-200">
+                <button class="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gray-100 dark:bg-dark-hover border border-gray-200 dark:border-dark-border text-gray-600 dark:text-text-secondary hover:text-gray-900 dark:hover:text-text-primary hover:border-primary/30 rounded-lg transition-all duration-200">
                   <BookmarkIcon class="w-5 h-5" />
                   Salvar
                 </button>
-                <button class="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-dark-hover border border-dark-border text-text-secondary hover:text-text-primary hover:border-primary/30 rounded-lg transition-all duration-200">
+                <button class="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gray-100 dark:bg-dark-hover border border-gray-200 dark:border-dark-border text-gray-600 dark:text-text-secondary hover:text-gray-900 dark:hover:text-text-primary hover:border-primary/30 rounded-lg transition-all duration-200">
                   <ShareIcon class="w-5 h-5" />
                   Compartilhar
                 </button>
@@ -268,25 +268,25 @@ const benefits = [
               v-motion
               :initial="{ opacity: 0, y: 20 }"
               :enter="{ opacity: 1, y: 0, transition: { delay: 150 } }"
-              class="bg-dark-card border border-dark-border rounded-lg p-6 space-y-4"
+              class="bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-lg p-6 space-y-4"
             >
-              <h3 class="text-lg font-bold text-text-primary">Informações</h3>
+              <h3 class="text-lg font-bold text-gray-900 dark:text-text-primary">Informações</h3>
               <div class="space-y-3 text-sm">
                 <div class="flex items-center justify-between">
-                  <span class="text-text-muted">Tipo</span>
-                  <span class="text-text-primary font-medium">{{ typeConfig[job.type]?.label || job.type }}</span>
+                  <span class="text-gray-500 dark:text-text-muted">Tipo</span>
+                  <span class="text-gray-900 dark:text-text-primary font-medium">{{ typeConfig[job.type]?.label || job.type }}</span>
                 </div>
                 <div class="flex items-center justify-between">
-                  <span class="text-text-muted">Localização</span>
-                  <span class="text-text-primary font-medium">{{ job.location }}</span>
+                  <span class="text-gray-500 dark:text-text-muted">Localização</span>
+                  <span class="text-gray-900 dark:text-text-primary font-medium">{{ job.location }}</span>
                 </div>
                 <div v-if="job.salary" class="flex items-center justify-between">
-                  <span class="text-text-muted">Salário</span>
+                  <span class="text-gray-500 dark:text-text-muted">Salário</span>
                   <span class="text-primary font-semibold">{{ job.salary }}</span>
                 </div>
                 <div class="flex items-center justify-between">
-                  <span class="text-text-muted">Publicada</span>
-                  <span class="text-text-primary font-medium">{{ formatDate(job.date) }}</span>
+                  <span class="text-gray-500 dark:text-text-muted">Publicada</span>
+                  <span class="text-gray-900 dark:text-text-primary font-medium">{{ formatDate(job.date) }}</span>
                 </div>
               </div>
             </div>
@@ -297,18 +297,18 @@ const benefits = [
               v-motion
               :initial="{ opacity: 0, y: 20 }"
               :enter="{ opacity: 1, y: 0, transition: { delay: 200 } }"
-              class="bg-dark-card border border-dark-border rounded-lg p-6"
+              class="bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-lg p-6"
             >
-              <h3 class="text-lg font-bold text-text-primary mb-4">Vagas Similares</h3>
+              <h3 class="text-lg font-bold text-gray-900 dark:text-text-primary mb-4">Vagas Similares</h3>
               <div class="space-y-3">
                 <NuxtLink
                   v-for="relatedJob in relatedJobs"
                   :key="relatedJob.id"
                   :to="`/jobs/${relatedJob.id}`"
-                  class="block p-3 bg-dark-hover border border-dark-border rounded-lg hover:border-primary/30 transition-all duration-200"
+                  class="block p-3 bg-gray-50 dark:bg-dark-hover border border-gray-200 dark:border-dark-border rounded-lg hover:border-primary/30 transition-all duration-200"
                 >
-                  <h4 class="text-text-primary text-sm font-medium mb-1 truncate">{{ relatedJob.title }}</h4>
-                  <p class="text-text-muted text-xs">{{ relatedJob.company }}</p>
+                  <h4 class="text-gray-900 dark:text-text-primary text-sm font-medium mb-1 truncate">{{ relatedJob.title }}</h4>
+                  <p class="text-gray-500 dark:text-text-muted text-xs">{{ relatedJob.company }}</p>
                 </NuxtLink>
               </div>
             </div>
