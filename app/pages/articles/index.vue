@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useSeoMeta } from '#imports'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import PostCard from '~/components/PostCard.vue'
 import { usePosts } from '~/composables/usePosts'
 import { MagnifyingGlassIcon, NewspaperIcon, DocumentTextIcon } from '@heroicons/vue/24/outline'
@@ -20,12 +21,15 @@ definePageMeta({
   layout: 'default-layout'
 })
 
+// Route for reading search query from URL
+const route = useRoute()
+
 // Data from composables
 const { getAllPosts } = usePosts()
 const allPosts = getAllPosts()
 
-// Search and filter state
-const searchQuery = ref('')
+// Search and filter state - initialize from URL query if present
+const searchQuery = ref((route.query.q as string) || '')
 const selectedCategory = ref('Todos')
 
 // Category definitions with their associated tags/keywords

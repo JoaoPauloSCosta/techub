@@ -11,7 +11,7 @@ const mockVideos: Video[] = [
         duration: '15:28',
         views: 2100000,
         date: '2024-01-15T10:00:00Z',
-        tags: ['Tech', 'Hardware', 'Review'],
+        tags: ['Tech', 'Hardware', 'Review', 'Vibe'],
         url: 'https://www.youtube.com/watch?v=wEvfQ6gqcXI'
     },
     {
@@ -22,7 +22,7 @@ const mockVideos: Video[] = [
         duration: '18:22',
         views: 8930,
         date: '2026-01-26T14:00:00Z',
-        tags: ['IA', 'Copilot', 'Vue'],
+        tags: ['IA', 'AI', 'Copilot', 'Vue'],
         url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
     },
     {
@@ -33,7 +33,7 @@ const mockVideos: Video[] = [
         duration: '32:10',
         views: 22150,
         date: '2026-01-24T09:30:00Z',
-        tags: ['Vue', 'Composition API', 'Avançado'],
+        tags: ['Vue', 'Composition API', 'Avançado', 'Vue.js'],
         url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
     },
     {
@@ -55,7 +55,7 @@ const mockVideos: Video[] = [
         duration: '42:15',
         views: 35670,
         date: '2026-01-20T11:00:00Z',
-        tags: ['Carreira', 'Remoto', 'Entrevista'],
+        tags: ['Carreira', 'Remoto', 'Entrevista', 'Vibe'],
         url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
     }
 ]

@@ -1,37 +1,57 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import {
   Bars3Icon,
   XMarkIcon,
-  MagnifyingGlassIcon,
   SparklesIcon,
   SunIcon,
-  MoonIcon
+  MoonIcon,
+  HomeIcon,
+  CodeBracketIcon,
+  CpuChipIcon,
+  CogIcon,
+  MusicalNoteIcon,
+  ServerIcon
 } from '@heroicons/vue/24/outline'
 import { useTheme } from '../composables/useTheme'
 
+const route = useRoute()
+const router = useRouter()
 const isMenuOpen = ref<boolean>(false)
-const searchQuery = ref<string>('')
-const isSearchFocused = ref<boolean>(false)
 const { isDark, toggleTheme } = useTheme()
 
 const menuItems = [
-  { label: 'News', href: '/articles' },
-  { label: 'Tutorials', href: '/tutorials' },
-  { label: 'Videos', href: '/videos' },
-  { label: 'Jobs', href: '/jobs' }
+  { label: 'Notícias', href: '/articles' },
+  { label: 'Tutoriais', href: '/tutorials' },
+  { label: 'Vídeos', href: '/videos' },
+  { label: 'Vagas', href: '/jobs' }
 ]
 
-const categories = [
-  { id: 'vue', name: 'VUE.JS', active: true },
-  { id: 'nuxt', name: 'NUXT 3', active: false },
-  { id: 'ai', name: 'GENERATIVE AI', active: false },
-  { id: 'web-vitals', name: 'WEB VITALS', active: false },
-  { id: 'architecture', name: 'ARCHITECTURE', active: false },
-  { id: 'case-studies', name: 'CASE STUDIES', active: false }
+// Topic categories for filtering
+const topics = [
+  { id: 'home', slug: '', name: 'INÍCIO', icon: HomeIcon },
+  { id: 'vue-nuxt', slug: 'vue-nuxt', name: 'VUE & NUXT', icon: CodeBracketIcon },
+  { id: 'ia-dev', slug: 'ia-dev', name: 'IA DEV', icon: CpuChipIcon },
+  { id: 'automacoes', slug: 'automacoes', name: 'AUTOMAÇÕES', icon: CogIcon },
+  { id: 'vibe-coding', slug: 'vibe-coding', name: 'VIBE CODING', icon: MusicalNoteIcon },
+  { id: 'backend', slug: 'backend', name: 'BACKEND', icon: ServerIcon }
 ]
 
-const activeCategory = ref<string>('vue')
+// Track active topic from URL
+const activeTopic = computed(() => {
+  const topic = route.query.topic as string | undefined
+  return topic || ''
+})
+
+// Navigate to topic
+const navigateToTopic = (slug: string) => {
+  if (slug === '') {
+    router.push('/')
+  } else {
+    router.push(`/?topic=${slug}`)
+  }
+}
 
 const toggleMenu = (): void => {
   isMenuOpen.value = !isMenuOpen.value
@@ -51,29 +71,7 @@ const toggleMenu = (): void => {
           <span class="text-xl font-bold tracking-tight text-gray-900 dark:text-text-primary">TechHub</span>
         </a>
 
-        <!-- Search Bar - Desktop -->
-        <div class="hidden md:flex flex-1 max-w-xl">
-          <div class="relative w-full">
-            <MagnifyingGlassIcon 
-              :class="[
-                'absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors duration-200',
-                isSearchFocused ? 'text-gray-500 dark:text-text-secondary' : 'text-gray-400 dark:text-text-muted'
-              ]" 
-            />
-            <input
-              v-model="searchQuery"
-              type="text"
-              placeholder="Search Vue, Nuxt, AI..."
-              class="w-full pl-11 pr-16 py-2.5 bg-gray-50 dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-lg text-gray-900 dark:text-text-primary placeholder-gray-400 dark:placeholder-text-muted focus:outline-none focus:border-primary/50 transition-all duration-200 text-sm"
-              @focus="isSearchFocused = true"
-              @blur="isSearchFocused = false"
-            />
-            <!-- Keyboard shortcut -->
-            <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-0.5 px-2 py-1 bg-gray-200 dark:bg-dark-border/80 text-gray-500 dark:text-text-muted text-xs rounded">
-              <span>⌘</span><span>K</span>
-            </div>
-          </div>
-        </div>
+
 
         <!-- Desktop Navigation -->
         <nav class="hidden md:flex items-center gap-6">
@@ -105,7 +103,7 @@ const toggleMenu = (): void => {
             href="/login"
             class="px-5 py-2 bg-primary hover:bg-primary-hover text-white dark:text-dark-bg text-sm font-semibold rounded-lg transition-all duration-200 press-effect"
           >
-            Sign In
+            Entrar
           </a>
         </nav>
 
@@ -121,40 +119,30 @@ const toggleMenu = (): void => {
       </div>
     </div>
 
-    <!-- Category Navigation Row -->
+    <!-- Topic Navigation Row -->
     <div class="border-t border-gray-200/50 dark:border-dark-border/50 bg-white dark:bg-dark-surface transition-colors duration-300">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav class="flex items-center gap-1 overflow-x-auto scrollbar-hide py-0">
-          <a
-            v-for="cat in categories"
-            :key="cat.id"
-            :href="`/category/${cat.id}`"
+          <button
+            v-for="topic in topics"
+            :key="topic.id"
+            type="button"
             :class="[
-              'flex-shrink-0 px-3 py-3 text-xs font-semibold tracking-wide transition-all duration-200 border-b-2 -mb-px',
-              activeCategory === cat.id
+              'flex-shrink-0 flex items-center gap-1.5 px-3 py-3 text-xs font-semibold tracking-wide transition-all duration-200 border-b-2 -mb-px cursor-pointer',
+              activeTopic === topic.slug
                 ? 'text-primary border-primary'
                 : 'text-gray-500 dark:text-text-muted hover:text-gray-900 dark:hover:text-text-secondary border-transparent'
             ]"
-            @click.prevent="activeCategory = cat.id"
+            @click="navigateToTopic(topic.slug)"
           >
-            {{ cat.name }}
-          </a>
+            <component :is="topic.icon" class="w-4 h-4" />
+            {{ topic.name }}
+          </button>
         </nav>
       </div>
     </div>
 
-    <!-- Mobile Search (visible when menu closed) -->
-    <div class="md:hidden bg-white dark:bg-dark-surface px-4 pb-3 border-t border-gray-200/30 dark:border-dark-border/30 transition-colors duration-300">
-      <div class="relative">
-        <MagnifyingGlassIcon class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-text-muted" />
-        <input
-          v-model="searchQuery"
-          type="text"
-          placeholder="Search..."
-          class="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-lg text-gray-900 dark:text-text-primary placeholder-gray-400 dark:placeholder-text-muted focus:outline-none focus:border-primary/50 transition-all duration-200 text-sm"
-        />
-      </div>
-    </div>
+
 
     <!-- Mobile Menu Dropdown -->
     <Transition
@@ -171,7 +159,7 @@ const toggleMenu = (): void => {
       >
         <div class="px-4 py-3 space-y-1">
           <div class="flex items-center justify-between px-4 py-2 mb-2">
-             <span class="text-sm font-medium text-gray-600 dark:text-text-secondary">Switch Theme</span>
+             <span class="text-sm font-medium text-gray-600 dark:text-text-secondary">Alternar Tema</span>
              <button
                 id="theme-toggle-mobile"
                 aria-label="Alternar tema"
@@ -196,7 +184,7 @@ const toggleMenu = (): void => {
             href="/login"
             class="block px-4 py-3 mt-2 bg-primary text-white dark:text-dark-bg text-center font-semibold rounded-lg"
           >
-            Sign In
+            Entrar
           </a>
         </div>
       </nav>

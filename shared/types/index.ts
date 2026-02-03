@@ -18,6 +18,8 @@ export interface Post {
     date: string
     readTime: number
     author: Author
+    type?: 'article' | 'tutorial'
+    difficulty?: 'Iniciante' | 'Intermediário' | 'Avançado'
     tags?: string[]
     featured?: boolean
 }
@@ -42,6 +44,7 @@ export interface Job {
     location: string
     salary?: string
     type: 'remote' | 'hybrid' | 'onsite'
+    level?: 'Junior' | 'Pleno' | 'Senior' | string
     tags: string[]
     date: string
     url?: string

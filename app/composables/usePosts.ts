@@ -78,7 +78,8 @@ const mockPosts: Post[] = [
             avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
             role: 'Editor Principal'
         },
-        tags: ['nuxt', 'vue', 'javascript'],
+        tags: ['Nuxt', 'Vue', 'Vue.js', 'JavaScript'],
+        type: 'article',
         featured: true
     },
     {
@@ -96,7 +97,8 @@ const mockPosts: Post[] = [
             name: 'Carlos Mendes',
             avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop'
         },
-        tags: ['ia', 'vue', 'produtividade']
+        tags: ['IA', 'AI', 'Copilot', 'GPT', 'Vue'],
+        type: 'article'
     },
     {
         id: '3',
@@ -113,7 +115,8 @@ const mockPosts: Post[] = [
             name: 'Ana Costa',
             avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop'
         },
-        tags: ['vue', 'performance', 'benchmark']
+        tags: ['Vue', 'Performance', 'Benchmark', 'Web Vitals'],
+        type: 'article'
     },
     {
         id: '4',
@@ -130,7 +133,8 @@ const mockPosts: Post[] = [
             name: 'Maria Silva',
             avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop'
         },
-        tags: ['openai', 'gpt', 'ia']
+        tags: ['AI', 'GPT', 'OpenAI', 'LLM'],
+        type: 'article'
     },
     {
         id: '5',
@@ -147,7 +151,9 @@ const mockPosts: Post[] = [
             name: 'Carlos Mendes',
             avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop'
         },
-        tags: ['nitro', 'api', 'nuxt']
+        tags: ['Backend', 'Nitro', 'API', 'Nuxt.js'],
+        type: 'tutorial',
+        difficulty: 'Intermediário'
     },
     {
         id: '6',
@@ -164,7 +170,83 @@ const mockPosts: Post[] = [
             name: 'Ana Costa',
             avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop'
         },
-        tags: ['php', 'backend', 'update']
+        tags: ['PHP', 'Backend', 'Laravel'],
+        type: 'article'
+    },
+    {
+        id: '7',
+        slug: 'como-conseguir-vaga-vue-exterior',
+        title: 'Como conseguir sua primeira vaga de Vue.js no exterior',
+        excerpt: 'Guia passo a passo para preparar seu portfólio, LinkedIn e inglês para vagas internacionais.',
+        content: articleContent,
+        image: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=450&fit=crop',
+        category: 'Carreira',
+        date: '2026-01-22T10:00:00Z',
+        readTime: 15,
+        author: {
+            id: 'a1',
+            name: 'Maria Silva',
+            avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop'
+        },
+        tags: ['Carreira', 'Vagas', 'Remoto', 'Vue.js'],
+        type: 'tutorial',
+        difficulty: 'Iniciante'
+    },
+    {
+        id: '8',
+        slug: 'automacao-python-scripts',
+        title: 'Automatizando tarefas repetitivas com Python',
+        excerpt: 'Crie bots simples para agilizar seu workflow diário de desenvolvimento.',
+        content: articleContent,
+        image: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800&h=450&fit=crop',
+        category: 'Automação',
+        date: '2026-01-21T14:20:00Z',
+        readTime: 8,
+        author: {
+            id: 'a2',
+            name: 'Carlos Mendes',
+            avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop'
+        },
+        tags: ['Automação', 'Script', 'Bot', 'Python'],
+        type: 'tutorial',
+        difficulty: 'Iniciante'
+    },
+    {
+        id: '9',
+        slug: 'setup-lofi-coding',
+        title: 'Setup Vibe Coding: Como criar o ambiente perfeito',
+        excerpt: 'Dicas de iluminação, playlists lo-fi e organização para entrar no flow.',
+        content: articleContent,
+        image: 'https://images.unsplash.com/photo-1493238792000-8113da705763?w=800&h=450&fit=crop',
+        category: 'Vibe Coding',
+        date: '2026-01-20T20:00:00Z',
+        readTime: 5,
+        author: {
+            id: 'a3',
+            name: 'Ana Costa',
+            avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop'
+        },
+        tags: ['Vibe', 'Setup', 'Lo-fi', 'Produtividade'],
+        type: 'article'
+    },
+    {
+        id: '10',
+        slug: 'backend-nodejs-best-practices',
+        title: 'Melhores práticas de Backend com Node.js em 2026',
+        excerpt: 'Arquitetura limpa, segurança e performance para APIs Node.js.',
+        content: articleContent,
+        image: 'https://images.unsplash.com/photo-1627398242454-45cee8f92518?w=800&h=450&fit=crop',
+        category: 'Backend',
+        date: '2026-01-19T09:00:00Z',
+        readTime: 10,
+        author: {
+            id: 'a2',
+            name: 'Carlos Mendes',
+            avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop'
+        },
+        tags: ['Backend', 'Node.js', 'API', 'JavaScript'],
+        type: 'tutorial',
+        difficulty: 'Avançado'
     }
 ]
 
@@ -225,12 +307,20 @@ export function usePosts() {
             .slice(0, limit)
     }
 
+    /**
+     * Get posts by type (article vs tutorial)
+     */
+    const getPostsByType = (type: 'article' | 'tutorial'): Post[] => {
+        return mockPosts.filter(post => post.type === type)
+    }
+
     return {
         getFeaturedPost,
         getLatestPosts,
         getPostsByCategory,
         getAllPosts,
         getPostBySlug,
-        getRelatedPosts
+        getRelatedPosts,
+        getPostsByType
     }
 }

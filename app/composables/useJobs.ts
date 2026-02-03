@@ -11,8 +11,9 @@ const mockJobs: Job[] = [
         location: 'São Paulo, SP',
         salary: 'R$ 18.000 - 25.000',
         type: 'remote',
+        level: 'Senior',
         tags: ['Vue.js', 'TypeScript', 'Nuxt'],
-        date: '2026-01-29T10:00:00Z',
+        date: new Date().toISOString(), // Fresh
         url: '#'
     },
     {
@@ -22,8 +23,9 @@ const mockJobs: Job[] = [
         location: 'Rio de Janeiro, RJ',
         salary: 'R$ 12.000 - 18.000',
         type: 'hybrid',
-        tags: ['PHP', 'Laravel', 'Vue.js'],
-        date: '2026-01-28T14:00:00Z',
+        level: 'Pleno',
+        tags: ['PHP', 'Laravel', 'Vue.js', 'Backend'],
+        date: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
         url: '#'
     },
     {
@@ -33,8 +35,9 @@ const mockJobs: Job[] = [
         location: 'Remoto (Global)',
         salary: 'USD 5.000 - 8.000',
         type: 'remote',
+        level: 'Pleno',
         tags: ['Vue.js', 'React', 'TypeScript'],
-        date: '2026-01-27T09:00:00Z',
+        date: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
         url: '#'
     },
     {
@@ -44,8 +47,9 @@ const mockJobs: Job[] = [
         location: 'Curitiba, PR',
         salary: 'R$ 10.000 - 15.000',
         type: 'onsite',
-        tags: ['PHP', 'MySQL', 'Docker'],
-        date: '2026-01-26T11:30:00Z',
+        level: 'Pleno',
+        tags: ['PHP', 'MySQL', 'Docker', 'Backend'],
+        date: new Date(Date.now() - 432000000).toISOString(), // 5 days ago
         url: '#'
     },
     {
@@ -55,8 +59,9 @@ const mockJobs: Job[] = [
         location: 'Remoto (Brasil)',
         salary: 'R$ 20.000 - 30.000',
         type: 'remote',
-        tags: ['Nuxt', 'AI', 'Python'],
-        date: '2026-01-25T16:00:00Z',
+        level: 'Senior',
+        tags: ['Nuxt', 'AI', 'Python', 'AI Engineer', 'IA'],
+        date: new Date().toISOString(), // Fresh
         url: '#'
     },
     {
@@ -66,8 +71,45 @@ const mockJobs: Job[] = [
         location: 'Campinas, SP',
         salary: 'R$ 14.000 - 20.000',
         type: 'hybrid',
-        tags: ['Vue.js', 'Laravel', 'API'],
-        date: '2026-01-24T13:00:00Z',
+        level: 'Senior',
+        tags: ['Vue.js', 'Laravel', 'API', 'Backend'],
+        date: new Date(Date.now() - 259200000).toISOString(), // 3 days ago
+        url: '#'
+    },
+    {
+        id: 'j7',
+        title: 'Junior Node.js Developer',
+        company: 'WebServices Ltda',
+        location: 'São Paulo, SP',
+        salary: 'R$ 4.000 - 6.000',
+        type: 'onsite',
+        level: 'Junior',
+        tags: ['Node.js', 'JavaScript', 'Express', 'Backend'],
+        date: new Date(Date.now() - 86400000).toISOString(),
+        url: '#'
+    },
+    {
+        id: 'j8',
+        title: 'QA Automation Engineer',
+        company: 'QualitySoft',
+        location: 'Remoto',
+        salary: 'R$ 8.000 - 12.000',
+        type: 'remote',
+        level: 'Pleno',
+        tags: ['Automation', 'Cypress', 'Playwright', 'Node.js'],
+        date: new Date(Date.now() - 604800000).toISOString(), // 7 days ago
+        url: '#'
+    },
+    {
+        id: 'j9',
+        title: 'AI Researcher Intern',
+        company: 'OpenMinds',
+        location: 'Belo Horizonte',
+        salary: 'R$ 2.500',
+        type: 'hybrid',
+        level: 'Junior',
+        tags: ['AI', 'Python', 'TensorFlow', 'IA / Automação', 'Automação'],
+        date: new Date(Date.now() - 10000000).toISOString(),
         url: '#'
     }
 ]
