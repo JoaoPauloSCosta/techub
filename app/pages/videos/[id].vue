@@ -107,10 +107,7 @@ const youtubeVideoId = computed(() => {
           </div>
         </template>
 
-        <!-- Duration Badge -->
-        <span class="absolute bottom-4 right-4 px-3 py-1.5 bg-dark-bg/90 backdrop-blur-sm text-text-primary text-sm font-mono font-medium rounded-lg z-10">
-          {{ video.duration }}
-        </span>
+
 
         <!-- Live indicator -->
         <span v-if="video.tags.includes('Live')" class="absolute top-4 right-4 px-3 py-1.5 bg-error text-white text-sm font-bold uppercase tracking-wide rounded-lg animate-pulse z-10">

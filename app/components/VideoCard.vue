@@ -39,10 +39,6 @@ const props = withDefaults(defineProps<Props>(), {
         </div>
       </div>
 
-      <!-- Duration Badge -->
-      <span class="absolute bottom-3 right-3 px-2 py-1 bg-dark-bg/90 backdrop-blur-sm text-text-primary text-xs font-mono font-medium rounded">
-        {{ video.duration }}
-      </span>
 
       <!-- Live indicator (optional) -->
       <span v-if="video.tags.includes('Live')" class="absolute top-3 right-3 px-2 py-1 bg-error text-white text-xs font-bold uppercase tracking-wide rounded animate-pulse">
