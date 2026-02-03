@@ -25,8 +25,10 @@ definePageMeta({
 const route = useRoute()
 
 // Data from composables
+// Data from composables
 const { getAllPosts } = usePosts()
-const allPosts = getAllPosts()
+const { data: posts } = await useAsyncData('articles-page-posts', () => getAllPosts())
+const allPosts = computed(() => posts.value || [])
 
 // Search and filter state - initialize from URL query if present
 const searchQuery = ref((route.query.q as string) || '')
@@ -40,12 +42,12 @@ const categories = [
   { id: 'ia-generativa', label: 'IA Generativa', keywords: ['ia', 'gpt', 'openai', 'llm', 'claude', 'gemini', 'ai'] },
   { id: 'automacao', label: 'Automação', keywords: ['automação', 'automation', 'script', 'pipeline', 'ci', 'cd'] },
   { id: 'dev-ia', label: 'Desenvolvimento Assistido por IA', keywords: ['copilot', 'cursor', 'ai', 'ia', 'produtividade', 'ia dev'] },
-  { id: 'vibe-coding', label: 'Vibe Coding', keywords: ['produtividade', 'ia', 'cursor', 'copilot', 'workflow', 'dx'] }
+  { id: 'vibe-coding', label: 'Vibe Coding', keywords: ['vibe', 'produtividade', 'ia', 'cursor', 'copilot', 'workflow', 'dx'] }
 ]
 
 // Filtered posts based on search and category
 const filteredPosts = computed(() => {
-  let result = allPosts
+  let result = allPosts.value
 
   // Filter by search query (title or excerpt)
   if (searchQuery.value.trim()) {
