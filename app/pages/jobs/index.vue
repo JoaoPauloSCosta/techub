@@ -29,7 +29,8 @@ definePageMeta({
 
 const route = useRoute()
 const { getAllJobs } = useJobs()
-const allJobs = getAllJobs()
+const { data: dbJobs } = await useAsyncData('jobs-page', () => getAllJobs())
+const allJobs = computed(() => dbJobs.value || [])
 
 // Filter State
 const searchQuery = ref<string>('')
@@ -75,7 +76,7 @@ const isNew = (dateString: string) => {
 }
 
 const filteredJobs = computed<Job[]>(() => {
-  return allJobs.filter(job => {
+  return allJobs.value.filter(job => {
     // Search Query
     if (searchQuery.value.trim()) {
       const query = searchQuery.value.toLowerCase()

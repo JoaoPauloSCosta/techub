@@ -21,11 +21,18 @@ const { getAllPosts } = usePosts()
 const { getAllVideos } = useVideos()
 const { getAllJobs } = useJobs()
 const { getTrending } = useTrending()
-const trendingTopics = getTrending()
 
-const allPosts = getAllPosts()
-const allVideos = getAllVideos()
-const allJobs = getAllJobs()
+// Async fetch for Posts (Supabase)
+const { data: dbPosts } = await useAsyncData('posts', () => getAllPosts())
+const { data: dbVideos } = await useAsyncData('videos', () => getAllVideos())
+const { data: dbJobs } = await useAsyncData('jobs', () => getAllJobs())
+
+// Fallback to empty checks
+const allPosts = computed(() => dbPosts.value || [])
+const allVideos = computed(() => dbVideos.value || [])
+const allJobs = computed(() => dbJobs.value || [])
+
+const trendingTopics = getTrending()
 
 // --- 1. Topic Detection ---
 const currentTopic = computed(() => {
@@ -91,15 +98,15 @@ const filteredContent = computed(() => {
   const config = topicConfig.value
   
   // Default values (No filters)
-  let posts = allPosts
-  let videos = allVideos
-  let jobs = allJobs
+  let posts = allPosts.value
+  let videos = allVideos.value
+  let jobs = allJobs.value
   let isFallback = false
   
   if (config) {
-    const fPosts = filterByTopic(allPosts, config.tags)
-    const fVideos = filterByTopic(allVideos, config.tags)
-    const fJobs = filterByTopic(allJobs, config.tags)
+    const fPosts = filterByTopic(allPosts.value, config.tags)
+    const fVideos = filterByTopic(allVideos.value, config.tags)
+    const fJobs = filterByTopic(allJobs.value, config.tags)
 
     // Check if we found ANY content relative to the topic
     const hasContent = fPosts.length > 0 || fVideos.length > 0 || fJobs.length > 0
@@ -120,7 +127,7 @@ const filteredContent = computed(() => {
   if (currentTopic.value && !isFallback && posts.length > 0) {
       featured = posts[0] as Post
   } else {
-      featured = (posts.find(p => p.featured) || posts[0] || allPosts[0]) as Post
+      featured = (posts.find(p => p.featured) || posts[0] || allPosts.value[0]) as Post
   }
 
   // Filter out the featured post from the list to avoid duplication

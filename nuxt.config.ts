@@ -4,8 +4,13 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   modules: [
     '@nuxtjs/tailwindcss',
-    '@vueuse/motion/nuxt'
+    '@vueuse/motion/nuxt',
+    '@nuxtjs/supabase'
   ],
+  supabase: {
+    redirect: false
+  },
+
 
   // Motion module configuration
   motion: {

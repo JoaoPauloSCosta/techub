@@ -6,7 +6,8 @@ const route = useRoute()
 const { getVideoById } = useVideos()
 
 const videoId = computed(() => route.params.id as string)
-const video = computed(() => getVideoById(videoId.value))
+const { data: videoData } = await useAsyncData(`video-${videoId.value}`, () => getVideoById(videoId.value))
+const video = computed(() => videoData.value)
 
 // SEO
 useSeoMeta({

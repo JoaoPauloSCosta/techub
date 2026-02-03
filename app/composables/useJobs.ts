@@ -1,169 +1,101 @@
 import type { Job } from '../../shared/types'
 
-// TODO: Replace mock data with useFetch() API calls
-
-const mockJobs: Job[] = [
-    {
-        id: 'j1',
-        title: 'Senior Vue.js Developer',
-        company: 'TechCorp Brasil',
-        companyLogo: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=100&h=100&fit=crop',
-        location: 'São Paulo, SP',
-        salary: 'R$ 18.000 - 25.000',
-        type: 'remote',
-        level: 'Senior',
-        tags: ['Vue.js', 'TypeScript', 'Nuxt'],
-        date: new Date().toISOString(), // Fresh
-        url: '#'
-    },
-    {
-        id: 'j2',
-        title: 'Full Stack Developer (PHP + Vue)',
-        company: 'StartupAI',
-        location: 'Rio de Janeiro, RJ',
-        salary: 'R$ 12.000 - 18.000',
-        type: 'hybrid',
-        level: 'Pleno',
-        tags: ['PHP', 'Laravel', 'Vue.js', 'Backend'],
-        date: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
-        url: '#'
-    },
-    {
-        id: 'j3',
-        title: 'Frontend Engineer - Vue.js',
-        company: 'FinTech Global',
-        location: 'Remoto (Global)',
-        salary: 'USD 5.000 - 8.000',
-        type: 'remote',
-        level: 'Pleno',
-        tags: ['Vue.js', 'React', 'TypeScript'],
-        date: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
-        url: '#'
-    },
-    {
-        id: 'j4',
-        title: 'PHP Backend Developer',
-        company: 'E-commerce BR',
-        location: 'Curitiba, PR',
-        salary: 'R$ 10.000 - 15.000',
-        type: 'onsite',
-        level: 'Pleno',
-        tags: ['PHP', 'MySQL', 'Docker', 'Backend'],
-        date: new Date(Date.now() - 432000000).toISOString(), // 5 days ago
-        url: '#'
-    },
-    {
-        id: 'j5',
-        title: 'Nuxt.js Developer - AI Products',
-        company: 'DeepTech Labs',
-        location: 'Remoto (Brasil)',
-        salary: 'R$ 20.000 - 30.000',
-        type: 'remote',
-        level: 'Senior',
-        tags: ['Nuxt', 'AI', 'Python', 'AI Engineer', 'IA'],
-        date: new Date().toISOString(), // Fresh
-        url: '#'
-    },
-    {
-        id: 'j6',
-        title: 'Vue.js + Laravel Developer',
-        company: 'AgriTech Solutions',
-        location: 'Campinas, SP',
-        salary: 'R$ 14.000 - 20.000',
-        type: 'hybrid',
-        level: 'Senior',
-        tags: ['Vue.js', 'Laravel', 'API', 'Backend'],
-        date: new Date(Date.now() - 259200000).toISOString(), // 3 days ago
-        url: '#'
-    },
-    {
-        id: 'j7',
-        title: 'Junior Node.js Developer',
-        company: 'WebServices Ltda',
-        location: 'São Paulo, SP',
-        salary: 'R$ 4.000 - 6.000',
-        type: 'onsite',
-        level: 'Junior',
-        tags: ['Node.js', 'JavaScript', 'Express', 'Backend'],
-        date: new Date(Date.now() - 86400000).toISOString(),
-        url: '#'
-    },
-    {
-        id: 'j8',
-        title: 'QA Automation Engineer',
-        company: 'QualitySoft',
-        location: 'Remoto',
-        salary: 'R$ 8.000 - 12.000',
-        type: 'remote',
-        level: 'Pleno',
-        tags: ['Automation', 'Cypress', 'Playwright', 'Node.js'],
-        date: new Date(Date.now() - 604800000).toISOString(), // 7 days ago
-        url: '#'
-    },
-    {
-        id: 'j9',
-        title: 'AI Researcher Intern',
-        company: 'OpenMinds',
-        location: 'Belo Horizonte',
-        salary: 'R$ 2.500',
-        type: 'hybrid',
-        level: 'Junior',
-        tags: ['AI', 'Python', 'TensorFlow', 'IA / Automação', 'Automação'],
-        date: new Date(Date.now() - 10000000).toISOString(),
-        url: '#'
-    }
-]
-
-/**
- * Composable for fetching and managing jobs
- */
 export function useJobs() {
-    /**
-     * Get jobs with optional limit
-     */
-    const getJobs = (limit: number = 5): Job[] => {
-        return mockJobs.slice(0, limit)
-    }
+    const supabase = useSupabaseClient()
 
-    /**
-     * Get all jobs
-     */
-    const getAllJobs = (): Job[] => {
-        return mockJobs
-    }
+    // Transform Supabase row to Job type
+    const transformJob = (row: any): Job => ({
+        id: row.id,
+        title: row.title,
+        company: row.company,
+        companyLogo: 'https://ui-avatars.com/api/?name=' + encodeURIComponent(row.company), // Fallback logo
+        location: row.location,
+        salary: row.salary || 'A combinar',
+        type: 'remote', // Defaulting to remote for tech jobs usually, or derive from tags if possible
+        level: 'Pleno', // Default
+        tags: row.tags || [],
+        date: row.created_at,
+        url: row.apply_url
+    })
 
-    /**
-     * Filter jobs by tag
-     */
-    const filterByTag = (tag: string): Job[] => {
-        if (tag === 'all') return mockJobs
-        if (tag === 'remote') {
-            return mockJobs.filter(job => job.type === 'remote')
+    const getAllJobs = async (): Promise<Job[]> => {
+        const { data, error } = await supabase
+            .from('jobs')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(20)
+
+        if (error) {
+            console.error('Error fetching jobs:', error)
+            return []
         }
-        return mockJobs.filter(job =>
-            job.tags.some((t: string) => t.toLowerCase().includes(tag.toLowerCase()))
-        )
+        return (data || []).map(transformJob)
     }
 
-    /**
-     * Get remote jobs only
-     */
-    const getRemoteJobs = (): Job[] => {
-        return mockJobs.filter(job => job.type === 'remote')
+    const getJobs = async (limit: number = 5): Promise<Job[]> => {
+        const { data, error } = await supabase
+            .from('jobs')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(limit)
+
+        if (error) {
+            console.error('Error fetching latest jobs:', error)
+            return []
+        }
+        return (data || []).map(transformJob)
     }
 
-    /**
-     * Get job by ID
-     */
-    const getJobById = (id: string): Job | undefined => {
-        return mockJobs.find(job => job.id === id)
+    const filterByTag = async (tag: string): Promise<Job[]> => {
+        let query = supabase.from('jobs').select('*').order('created_at', { ascending: false })
+
+        if (tag !== 'all') {
+            if (tag === 'remote') {
+                // If we had a type column, we'd use .eq('type', 'remote'). 
+                // For now, looking for 'remote' in location or tags
+                query = query.or(`location.ilike.%remote%,tags.cs.{"remote"}`)
+            } else {
+                query = query.contains('tags', [tag])
+            }
+        }
+
+        const { data, error } = await query
+        if (error) {
+            console.error('Error filtering jobs:', error)
+            return []
+        }
+        return (data || []).map(transformJob)
+    }
+
+    const getRemoteJobs = async (): Promise<Job[]> => {
+        // Logic to find remote jobs
+        const { data, error } = await supabase
+            .from('jobs')
+            .select('*')
+            .or(`location.ilike.%remote%,tags.cs.{"remote"}`)
+            .order('created_at', { ascending: false })
+
+        if (error) return []
+        return (data || []).map(transformJob)
+    }
+
+    const getJobById = async (id: string): Promise<Job | undefined> => {
+        const { data, error } = await supabase
+            .from('jobs')
+            .select('*')
+            .eq('id', id)
+            .single()
+
+        if (error) return undefined
+        return transformJob(data)
     }
 
     return {
-        getJobs,
         getAllJobs,
+        getJobs,
         filterByTag,
         getRemoteJobs,
         getJobById
     }
 }
+

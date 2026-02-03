@@ -24,7 +24,8 @@ definePageMeta({
 
 // Data from composables
 const { getAllVideos } = useVideos()
-const allVideos = getAllVideos()
+const { data: dbVideos } = await useAsyncData('videos-page', () => getAllVideos())
+const allVideos = computed(() => dbVideos.value || [])
 
 // Search and filter state
 const searchQuery = ref('')
@@ -42,7 +43,7 @@ const categories = [
 
 // Filtered videos based on search and category
 const filteredVideos = computed(() => {
-  let result = allVideos
+  let result = allVideos.value
 
   // Filter by search query
   if (searchQuery.value.trim()) {

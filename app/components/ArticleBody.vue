@@ -1,9 +1,20 @@
 <script setup lang="ts">
+import MarkdownIt from 'markdown-it'
+import { computed } from 'vue'
+
 interface Props {
   content: string
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+
+const md = new MarkdownIt({
+  html: true,
+  linkify: true,
+  typographer: true
+})
+
+const renderedContent = computed(() => md.render(props.content || ''))
 </script>
 
 <template>
@@ -17,7 +28,7 @@ defineProps<Props>()
     prose-pre:bg-gray-900 prose-pre:border prose-pre:border-dark-border
     prose-code:text-primary prose-code:bg-gray-100 dark:prose-code:bg-[#1a1a1a] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:border prose-code:border-gray-200 dark:prose-code:border-[#2a2a2a] prose-code:font-mono prose-code:text-sm prose-code:before:content-[''] prose-code:after:content-['']
     prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-gray-50 dark:prose-blockquote:bg-[#0f0f0f] prose-blockquote:not-italic prose-blockquote:py-5 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:my-8"
-    v-html="content"
+    v-html="renderedContent"
   />
 </template>
 

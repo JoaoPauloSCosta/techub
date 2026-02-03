@@ -23,7 +23,10 @@ const { getPostBySlug, getRelatedPosts } = usePosts()
 const slug = computed<string>(() => route.params.slug as string)
 
 // Get article data
-const article = computed(() => getPostBySlug(slug.value))
+const { data: article } = await useAsyncData(
+  `article-${slug.value}`, 
+  () => getPostBySlug(slug.value)
+)
 
 // Handle 404
 if (!article.value) {
@@ -34,10 +37,15 @@ if (!article.value) {
 }
 
 // Related articles
-const relatedArticles = computed(() => {
-  if (!article.value) return []
-  return getRelatedPosts(slug.value, 3)
-})
+const { data: relatedArticles } = await useAsyncData(
+  `related-${slug.value}`,
+  () => getRelatedPosts(slug.value, 3),
+  {
+      lazy: true, // Load related posts after main content
+      default: () => []
+  }
+)
+
 
 // Article URL for sharing
 const articleUrl = computed<string>(() => {

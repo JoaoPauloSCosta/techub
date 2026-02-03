@@ -24,14 +24,22 @@ definePageMeta({
 
 const route = useRoute()
 const { getJobById, getJobs } = useJobs()
-
 const jobId = computed(() => route.params.id as string)
-const job = computed(() => getJobById(jobId.value))
+
+const { data: pageData } = await useAsyncData(`job-${jobId.value}`, async () => {
+  const [fetchedJob, fetchedRelated] = await Promise.all([
+    getJobById(jobId.value),
+    getJobs(6)
+  ])
+  return { job: fetchedJob, related: fetchedRelated }
+})
+
+const job = computed(() => pageData.value?.job)
 
 // Related jobs (same type or tags)
 const relatedJobs = computed(() => {
-  if (!job.value) return []
-  return getJobs(6)
+  if (!pageData.value?.related || !job.value) return []
+  return pageData.value.related
     .filter(j => j.id !== job.value?.id)
     .slice(0, 3)
 })
