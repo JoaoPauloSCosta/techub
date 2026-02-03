@@ -87,9 +87,17 @@ export function useVideos() {
         )
     }
 
+    /**
+     * Get video by ID
+     */
+    const getVideoById = (id: string): Video | undefined => {
+        return mockVideos.find(video => video.id === id)
+    }
+
     return {
         getVideos,
         getAllVideos,
-        getVideosByTag
+        getVideosByTag,
+        getVideoById
     }
 }

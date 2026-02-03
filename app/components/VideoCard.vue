@@ -10,24 +10,16 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   index: 0
 })
-
-const emit = defineEmits<{
-  play: [video: Video]
-}>()
-
-const handleClick = () => {
-  emit('play', props.video)
-}
 </script>
 
 <template>
-  <article
+  <NuxtLink
+    :to="`/videos/${video.id}`"
     :id="`video-card-${video.id}`"
     v-motion
     :initial="{ opacity: 0, y: 20 }"
     :enter="{ opacity: 1, y: 0, transition: { type: 'spring', stiffness: 250, damping: 25, delay: 50 + (index * 80) } }"
-    class="relative bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded overflow-hidden group cursor-pointer transition-all duration-350 hover:border-primary/50 hover:shadow-card-hover hover-lift"
-    @click="handleClick"
+    class="block relative bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded overflow-hidden group cursor-pointer transition-all duration-350 hover:border-primary/50 hover:shadow-card-hover hover-lift"
   >
     <!-- Thumbnail -->
     <div class="relative aspect-video overflow-hidden">
@@ -87,5 +79,5 @@ const handleClick = () => {
 
     <!-- Bottom accent line -->
     <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-accent via-primary to-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-  </article>
+  </NuxtLink>
 </template>
