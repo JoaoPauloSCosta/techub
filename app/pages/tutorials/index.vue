@@ -1,32 +1,37 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useSeoMeta } from '#imports'
+import { useSeoMeta, useAsyncData } from '#imports'
 import { usePosts } from '~/composables/usePosts'
+import type { Post } from '~~/shared/types'
 import TutorialCard from '~/components/TutorialCard.vue'
 import { BookOpenIcon, MagnifyingGlassIcon, FunnelIcon } from '@heroicons/vue/24/outline'
 
-// Logic
-const { getPostsByType } = usePosts()
-const allTutorials = getPostsByType('tutorial')
+// Logic - fetch all posts and filter tutorials
+const { getAllPosts } = usePosts()
+const { data: allPosts } = await useAsyncData('tutorials-posts', () => getAllPosts())
+
+const allTutorials = computed(() => 
+  (allPosts.value || []).filter((p: Post) => p.type === 'tutorial')
+)
 
 const searchQuery = ref('')
 const selectedDifficulty = ref<string | null>(null)
 
 // Computed
 const filteredTutorials = computed(() => {
-  let result = allTutorials
+  let result = allTutorials.value
 
   if (searchQuery.value) {
     const q = searchQuery.value.toLowerCase()
-    result = result.filter(t => 
+    result = result.filter((t: Post) => 
       t.title.toLowerCase().includes(q) || 
       t.excerpt.toLowerCase().includes(q) ||
-      t.tags?.some(tag => tag.toLowerCase().includes(q))
+      t.tags?.some((tag: string) => tag.toLowerCase().includes(q))
     )
   }
 
   if (selectedDifficulty.value) {
-    result = result.filter(t => t.difficulty === selectedDifficulty.value)
+    result = result.filter((t: Post) => (t as any).difficulty === selectedDifficulty.value)
   }
 
   return result

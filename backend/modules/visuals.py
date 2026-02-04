@@ -50,10 +50,8 @@ class VisualGenerator:
                 print("❌ Nenhuma imagem retornada pelo modelo.")
                 return None
 
-            # Convert PIL Image to Bytes
-            img_byte_arr = io.BytesIO()
-            generated_image.save(img_byte_arr, format='PNG')
-            img_byte_arr = img_byte_arr.getvalue()
+            # Extract Bytes directly from Google GenAI Image object
+            img_byte_arr = generated_image.image_bytes
 
             # Upload to Supabase
             file_path = f"{slug}.png"

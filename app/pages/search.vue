@@ -1,21 +1,22 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useSeoMeta } from '#imports'
+import { useSeoMeta, useAsyncData } from '#imports'
 import { usePosts } from '~/composables/usePosts'
+import type { Post } from '~~/shared/types'
 import PostCard from '~/components/PostCard.vue'
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 
 const { getAllPosts } = usePosts()
-const allPosts = getAllPosts()
+const { data: allPosts } = await useAsyncData('search-posts', () => getAllPosts())
 
 const searchQuery = ref('')
 const filteredPosts = computed(() => {
-  if (!searchQuery.value) return []
+  if (!searchQuery.value || !allPosts.value) return []
   const q = searchQuery.value.toLowerCase()
-  return allPosts.filter(p => 
+  return allPosts.value.filter((p: Post) => 
     p.title.toLowerCase().includes(q) || 
     p.excerpt.toLowerCase().includes(q) ||
-    p.tags?.some(tag => tag.toLowerCase().includes(q))
+    p.tags?.some((tag: string) => tag.toLowerCase().includes(q))
   )
 })
 

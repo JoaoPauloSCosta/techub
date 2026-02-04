@@ -227,7 +227,8 @@ const filteredJobs = computed<Job[]>(() => {
       <NuxtLink
         v-for="(job, index) in filteredJobs"
         :key="job.id"
-        :to="`/jobs/${job.id}`"
+        :to="job.url"
+        target="_blank"
         v-motion
         :initial="{ opacity: 0, y: 20 }"
         :enter="{ opacity: 1, y: 0, transition: { delay: 150 + index * 50 } }"
