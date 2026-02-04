@@ -89,8 +89,7 @@ class JobScraper:
                     "salary": self._format_salary(item.get('salary_min'), item.get('salary_max')),
                     "apply_url": item.get('apply_url') or item.get('url'),
                     "tags": item.get('tags', []),
-                    "created_at": item.get('date', datetime.datetime.now().isoformat()),
-                    "type": "remote"
+                    "created_at": item.get('date', datetime.datetime.now().isoformat())
                 }
                 jobs.append(job)
                 count += 1
@@ -145,8 +144,7 @@ class JobScraper:
                     "salary": "A combinar",
                     "apply_url": link,
                     "tags": source['tags'], # Inherit source tags
-                    "created_at": published_iso,
-                    "type": "remote" if "remote" in source['url'] or "remote" in title.lower() else "hybrid"
+                    "created_at": published_iso
                 }
                 
                 jobs.append(job)

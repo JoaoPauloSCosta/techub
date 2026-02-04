@@ -31,6 +31,7 @@ class ContentGenerator:
         Fonte: {scraped_item['source']}
         Link Original: {scraped_item['link']}
         Resumo do Conteúdo: {scraped_item['summary']}
+        Tags Detectadas pelo Sistema: {', '.join(scraped_item.get('tags', []))}
 
         Instruções de Saída:
         1. O artigo deve ser em Markdown.
@@ -39,9 +40,16 @@ class ContentGenerator:
         4. O corpo deve explicar o conceito, novidade ou tutorial de forma didática.
         5. Se for código, use blocos de código com linguagem especificada.
         6. Cite a fonte original no final com link: "Fonte: [Nome](Link)".
-        7. Selecione as tags APENAS desta lista (escolha as que se aplicam, mínimo 1, máximo 3): 
-           ["VUE & NUXT", "IA DEV", "AUTOMAÇÕES", "VIBE CODING", "BACKEND"].
-           NÃO invente novas tags. Use exatamente como escrito.
+        7. Selecione as tags APENAS desta lista (escolha as que se aplicam, mínimo 1, máximo 2): 
+           ["Vue&Nuxt", "IA Dev", "Automações", "Vibe Coding", "Backend"].
+           IMPORTANTE: Se as "Tags Detectadas pelo Sistema" acima incluírem alguma destas, use-a com prioridade.
+           
+           NÃO invente novas tags. Use exatamente como escrito (Title Case).
+           - "Vue&Nuxt": Para notícias de Vue, Nuxt, Vite.
+           - "IA Dev": Para IA, LLMs, Agentes, ChatGPT.
+           - "Automações": Para N8N, Zapier, Bots.
+           - "Backend": Para Python, APIs, Banco de Dados, Docker.
+           - "Vibe Coding": Apenas se for sobre lifestyle/setup (raro para notícias).
 
         Retorne APENAS um JSON válido (sem markdown code blocks ```json) com a seguinte estrutura:
         {{

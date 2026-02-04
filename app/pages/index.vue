@@ -41,6 +41,7 @@ const currentTopic = computed(() => {
 })
 
 // --- 2. Topic Mapping Configuration ---
+// --- 2. Topic Mapping Configuration ---
 const topicConfig = computed(() => {
   const t = currentTopic.value
   if (!t) return null
@@ -49,22 +50,22 @@ const topicConfig = computed(() => {
     'vue-nuxt': {
       title: 'Universo Vue.js',
       subtitle: 'Tudo sobre Vue, Nuxt e o ecossistema.',
-      tags: ['Vue', 'Nuxt', 'Vue.js', 'Nuxt.js', 'JavaScript', 'TypeScript']
+      tags: ['Vue&Nuxt', 'Vue', 'Nuxt', 'Vue.js', 'Nuxt.js', 'JavaScript', 'TypeScript']
     },
-    'ai-dev': {
+    'ia-dev': {
       title: 'Desenvolvimento com IA',
       subtitle: 'Ferramentas, Copilots e Engenharia de Prompt.',
-      tags: ['IA', 'AI', 'Copilot', 'GPT', 'LLM', 'Python', 'Intelligence']
+      tags: ['IA Dev', 'IA', 'AI', 'Copilot', 'GPT', 'LLM', 'Python', 'Intelligence']
     },
-    'automations': {
+    'automacoes': {
       title: 'Automação & Scripts',
       subtitle: 'Bots, Python e otimização de workflow.',
-      tags: ['Automação', 'Automation', 'Script', 'Bot', 'Python']
+      tags: ['Automações', 'Automação', 'Automation', 'Script', 'Bot', 'Python', 'n8n']
     },
     'vibe-coding': {
       title: 'Foco: Vibe Coding',
       subtitle: 'Setups, Produtividade e Lo-fi.',
-      tags: ['Vibe', 'Setup', 'Produtividade', 'Lo-fi']
+      tags: ['Vibe Coding', 'Vibe', 'Setup', 'Produtividade', 'Lo-fi']
     },
     'backend': {
       title: 'Backend Engineering',
@@ -84,12 +85,33 @@ const topicConfig = computed(() => {
 const filterByTopic = (items: any[], tags: string[]) => {
   if (!tags || tags.length === 0) return items
   
+  const escapeRegExp = (string: string) => {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  }
+
   // Strict match: Item must have at least one tag from the topic list
+  // OR the item title contains one of the tags (case insensitive) with word boundaries
   return items.filter(item => 
+    // Check tags
     item.tags?.some((tag: string) => 
       tags.some(t => t.toLowerCase() === tag.toLowerCase())
     ) ||
-    (item.category && tags.some(t => t.toLowerCase() === item.category.toLowerCase()))
+    // Check category
+    (item.category && tags.some(t => t.toLowerCase() === item.category.toLowerCase())) ||
+    // Check Title (User request: "exibidos nos titulos")
+    (item.title && tags.some(t => {
+      // Use word boundaries to avoid false positives (e.g. "IA" in "Guia")
+      // Handle special chars by escaping, but ensure \b works.
+      // Note: \b in JS regex might not work well with accented characters for boundaries if not in unicode mode /u, 
+      // but browsers handling of \b with utf-8 is decent. 
+      // A safer approach for "Vue.js" or "C#" etc is to be careful.
+      try {
+         const pattern = new RegExp(`(^|\\s|[.,!?;:()\[\\]])${escapeRegExp(t)}($|\\s|[.,!?;:()\[\\]])`, 'i')
+         return pattern.test(item.title)
+      } catch (e) {
+         return item.title.toLowerCase().includes(t.toLowerCase())
+      }
+    }))
   )
 }
 
@@ -123,15 +145,15 @@ const filteredContent = computed(() => {
   // Logic for Featured Post: 
   // If specific topic selected -> First filtered post
   // If General or Fallback -> Global featured
-  let featured: Post
+  let featured: any // Use any to avoid type issues if Post interface isn't imported
   if (currentTopic.value && !isFallback && posts.length > 0) {
-      featured = posts[0] as Post
+      featured = posts[0]
   } else {
-      featured = (posts.find(p => p.featured) || posts[0] || allPosts.value[0]) as Post
+      featured = (posts.find((p: any) => p.featured) || posts[0] || allPosts.value[0])
   }
 
   // Filter out the featured post from the list to avoid duplication
-  const regularPosts = posts.filter(p => p.id !== featured?.id)
+  const regularPosts = posts.filter((p: any) => p.id !== featured?.id)
 
   return {
     featured,

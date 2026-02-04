@@ -24,16 +24,7 @@ const formatDate = (dateString: string) => {
   })
 }
 
-// Formatação de views
-const formatViews = (views: number) => {
-  if (views >= 1000000) {
-    return `${(views / 1000000).toFixed(1)}M visualizações`
-  }
-  if (views >= 1000) {
-    return `${(views / 1000).toFixed(1)}K visualizações`
-  }
-  return `${views} visualizações`
-}
+
 
 // Extrair ID do YouTube da URL
 const youtubeVideoId = computed(() => {
@@ -145,10 +136,7 @@ const youtubeVideoId = computed(() => {
             </div>
           </div>
 
-          <span class="hidden sm:block text-gray-300 dark:text-dark-border">•</span>
 
-          <!-- Views -->
-          <span class="text-sm">{{ formatViews(video.views ?? 0) }}</span>
 
           <span class="hidden sm:block text-gray-300 dark:text-dark-border">•</span>
 
