@@ -79,6 +79,83 @@ class Scraper:
                 "type": "news"
             },
 
+            # --- AI Labs & Research (Major Players) ---
+            {
+                "name": "OpenAI News",
+                "url": "https://openai.com/news/rss.xml",
+                "type": "news"
+            },
+            # {
+            #     "name": "Anthropic News",
+            #     "url": "https://www.anthropic.com/news",  # No RSS available
+            #     "type": "news"
+            # },
+            {
+                "name": "Google AI Blog",
+                "url": "https://research.google/blog/rss/",
+                "type": "news"
+            },
+            {
+                "name": "DeepMind Blog",
+                "url": "https://deepmind.google/discover/blog/rss.xml",
+                "type": "news"
+            },
+            # {
+            #     "name": "xAI",
+            #     "url": "https://x.ai/",  # No RSS available
+            #     "type": "news"
+            # },
+            # {
+            #     "name": "DeepSeek",
+            #     "url": "https://www.deepseek.com/",  # No RSS available
+            #     "type": "news"
+            # },
+            {
+                "name": "Microsoft AI Blog",
+                "url": "https://blogs.microsoft.com/ai/feed/",
+                "type": "news"
+            },
+            {
+                "name": "Meta AI News",
+                "url": "https://about.fb.com/feed/",
+                "type": "news"
+            },
+            {
+                "name": "Cohere Blog",
+                "url": "https://cohere.com/blog/rss.xml",
+                "type": "news"
+            },
+            {
+                "name": "Mistral AI News",
+                "url": "https://mistral.ai/news/feed/",
+                "type": "news"
+            },
+            {
+                "name": "Hugging Face Blog",
+                "url": "https://huggingface.co/blog/feed.xml",
+                "type": "news"
+            },
+            {
+                "name": "Stability AI Blog",
+                "url": "https://stability.ai/blog/rss",
+                "type": "news"
+            },
+            # {
+            #     "name": "Midjourney",
+            #     "url": "https://www.midjourney.com/",  # No RSS available
+            #     "type": "news"
+            # },
+            {
+                "name": "Nvidia AI Blog",
+                "url": "https://blogs.nvidia.com/feed/",
+                "type": "news"
+            },
+            {
+                "name": "AWS Machine Learning",
+                "url": "https://aws.amazon.com/blogs/machine-learning/feed/",
+                "type": "news"
+            },
+
             # --- Fontes Nacionais (Brasil) ---
             # {
             #     "name": "Rocketseat",
