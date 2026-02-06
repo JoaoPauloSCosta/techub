@@ -22,6 +22,7 @@ export interface Post {
     difficulty?: 'Iniciante' | 'Intermediário' | 'Avançado'
     tags?: string[]
     featured?: boolean
+    views?: number
 }
 
 export interface Video {
@@ -48,6 +49,7 @@ export interface Job {
     tags: string[]
     date: string
     url?: string
+    views?: number
 }
 
 export interface TrendingTopic {

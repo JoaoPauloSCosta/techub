@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { EnvelopeIcon, CheckCircleIcon, SparklesIcon } from '@heroicons/vue/24/outline'
 
 const email = ref<string>('')
 const isSubmitted = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
+const acceptedPrivacy = ref<boolean>(false)
+
+// Botão só habilita quando checkbox está marcado
+const isButtonDisabled = computed(() => !acceptedPrivacy.value || isLoading.value)
 
 const handleSubmit = async (): Promise<void> => {
-  if (!email.value) return
+  if (!email.value || !acceptedPrivacy.value) return
 
   isLoading.value = true
 
@@ -65,22 +69,63 @@ const handleSubmit = async (): Promise<void> => {
           type="email"
           placeholder="seu@email.com"
           required
-          class="w-full px-4 py-3 bg-gray-50 dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded text-gray-900 placeholder-gray-400 focus:outline-none focus:border-primary/50 focus:shadow-glow transition-all duration-200"
+          class="w-full px-4 py-3 bg-gray-50 dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded text-gray-900 dark:text-text-primary placeholder-gray-400 focus:outline-none focus:border-primary/50 focus:shadow-glow transition-all duration-200"
         />
+        
+        <!-- Checkbox de Privacidade (LGPD) -->
+        <label 
+          id="newsletter-privacy-checkbox"
+          class="flex items-start gap-3 cursor-pointer group"
+        >
+          <div class="relative flex-shrink-0 mt-0.5">
+            <input
+              v-model="acceptedPrivacy"
+              type="checkbox"
+              class="sr-only peer"
+            />
+            <div 
+              class="w-5 h-5 border-2 rounded transition-all duration-200 flex items-center justify-center"
+              :class="acceptedPrivacy 
+                ? 'bg-primary border-primary' 
+                : 'border-gray-300 dark:border-dark-border group-hover:border-primary/50'"
+            >
+              <svg 
+                v-if="acceptedPrivacy"
+                class="w-3 h-3 text-white dark:text-dark-bg" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+          </div>
+          <span class="text-sm text-gray-600 dark:text-text-muted leading-tight">
+            Concordo com a 
+            <a 
+              href="/privacy" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="text-primary hover:underline font-medium"
+              @click.stop
+            >
+              Política de Privacidade
+            </a>.
+          </span>
+        </label>
+
         <button
           type="submit"
-          :disabled="isLoading"
-          class="w-full px-4 py-3 bg-primary hover:bg-primary-hover disabled:opacity-60 text-white dark:text-dark-bg font-semibold rounded transition-all duration-200 flex items-center justify-center gap-2 shadow-glow hover:shadow-glow-lg press-effect"
+          :disabled="isButtonDisabled"
+          class="w-full px-4 py-3 bg-primary text-white dark:text-dark-bg font-semibold rounded transition-all duration-200 flex items-center justify-center gap-2"
+          :class="isButtonDisabled 
+            ? 'opacity-50 cursor-not-allowed' 
+            : 'hover:bg-primary-hover shadow-glow hover:shadow-glow-lg press-effect'"
         >
           <span v-if="isLoading" class="w-5 h-5 border-2 border-dark-bg/30 border-t-dark-bg rounded-full animate-spin"></span>
           <span v-else>Inscrever-se gratuitamente</span>
         </button>
       </form>
-
-      <!-- Privacy Note -->
-      <p class="text-gray-500 text-xs mt-4 text-center">
-        Ao se inscrever, você concorda com nossa <a href="#" class="text-primary hover:underline">Política de Privacidade</a>.
-      </p>
     </div>
 
     <!-- Success State -->

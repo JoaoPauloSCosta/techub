@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { ClockIcon } from '@heroicons/vue/24/outline'
+import { ClockIcon, EyeIcon } from '@heroicons/vue/24/outline'
 import type { Post } from '../../shared/types'
 import { formatDate } from '~/utils/formatDate'
 
@@ -14,6 +14,13 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const formattedDate = computed(() => formatDate(props.post.date))
+
+// Format view count (e.g., 1200 -> 1.2k)
+const formatViews = (views: number | undefined): string => {
+  if (!views) return '0'
+  if (views >= 1000) return `${(views / 1000).toFixed(1)}k`
+  return views.toString()
+}
 </script>
 
 <template>
@@ -43,35 +50,41 @@ const formattedDate = computed(() => formatDate(props.post.date))
     </div>
 
     <!-- Content -->
-    <div class="p-5">
-      <!-- Title -->
-      <h3 class="text-gray-900 dark:text-text-primary font-semibold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-200">
+    <div class="p-5 flex flex-col">
+      <!-- Title - max 2 lines with ellipsis -->
+      <h3 class="text-gray-900 dark:text-text-primary font-semibold text-lg mb-2 line-clamp-2 leading-tight group-hover:text-primary transition-colors duration-200">
         {{ post.title }}
       </h3>
 
-      <!-- Excerpt -->
-      <p class="text-gray-500 dark:text-text-muted text-sm mb-4 line-clamp-2">
+      <!-- Excerpt - max 3 lines with word break for long URLs -->
+      <p class="text-gray-500 dark:text-text-muted text-sm mb-4 line-clamp-3 break-words">
         {{ post.excerpt }}
       </p>
 
-      <!-- Meta Row -->
-      <div class="flex items-center justify-between">
-        <!-- Author -->
-        <div class="flex items-center gap-2.5">
+      <!-- Meta Row - flex-wrap for small screens, mt-auto to push to bottom -->
+      <div class="mt-auto flex flex-wrap items-center gap-x-3 gap-y-2">
+        <!-- Author - min-w-0 allows shrinking, truncate for long names -->
+        <div class="flex items-center gap-2 min-w-0 max-w-[50%]">
           <img
             :src="post.author.avatar"
             :alt="post.author.name"
-            class="w-7 h-7 rounded object-cover border border-gray-200 dark:border-dark-border"
+            class="w-6 h-6 rounded object-cover border border-gray-200 dark:border-dark-border flex-shrink-0"
           />
-          <span class="text-gray-600 dark:text-text-secondary text-sm">{{ post.author.name }}</span>
+          <span class="text-gray-600 dark:text-text-secondary text-sm truncate">{{ post.author.name }}</span>
         </div>
 
-        <!-- Date & Read Time -->
-        <div class="flex items-center gap-3 text-gray-400 dark:text-text-muted text-xs">
-          <span>{{ formattedDate }}</span>
-          <div class="flex items-center gap-1">
-            <ClockIcon class="w-3.5 h-3.5" />
+        <!-- Date, Read Time & Views - whitespace-nowrap prevents breaking -->
+        <div class="flex items-center gap-2 text-gray-400 dark:text-text-muted text-xs ml-auto">
+          <span class="whitespace-nowrap">{{ formattedDate }}</span>
+          <span class="text-gray-300 dark:text-dark-border">•</span>
+          <div class="flex items-center gap-1 whitespace-nowrap">
+            <ClockIcon class="w-3.5 h-3.5 flex-shrink-0" />
             <span>{{ post.readTime }}min</span>
+          </div>
+          <div v-if="post.views" class="flex items-center gap-1 whitespace-nowrap" title="Visualizações">
+            <span class="text-gray-300 dark:text-dark-border">•</span>
+            <EyeIcon class="w-3.5 h-3.5 flex-shrink-0" />
+            <span>{{ formatViews(post.views) }}</span>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSeoMeta } from '#imports'
 import {
@@ -23,7 +23,7 @@ definePageMeta({
 })
 
 const route = useRoute()
-const { getJobById, getJobs } = useJobs()
+const { getJobById, getJobs, incrementViews } = useJobs()
 const jobId = computed(() => route.params.id as string)
 
 const { data: pageData } = await useAsyncData(`job-${jobId.value}`, async () => {
@@ -35,6 +35,13 @@ const { data: pageData } = await useAsyncData(`job-${jobId.value}`, async () => 
 })
 
 const job = computed(() => pageData.value?.job)
+
+// Increment view count (client-side only to avoid SSR double-counting)
+onMounted(() => {
+  if (job.value?.id) {
+    incrementViews(job.value.id)
+  }
+})
 
 // Related jobs (same type or tags)
 const relatedJobs = computed(() => {

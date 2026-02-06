@@ -22,7 +22,8 @@ export function usePosts() {
         },
         tags: row.tags || [],
         type: row.type === 'tutorial' ? 'tutorial' : 'article',
-        featured: false // Logic to be added if needed
+        featured: false, // Logic to be added if needed
+        views: row.views || 0
     })
 
     const getLatestPosts = async (limit: number = 6): Promise<Post[]> => {
@@ -93,13 +94,40 @@ export function usePosts() {
         return (data || []).map(transformPost)
     }
 
+    // Increment view counter for a post (calls Supabase RPC)
+    const incrementViews = async (id: string): Promise<void> => {
+        // Type assertion needed because custom RPC function isn't in generated Supabase types
+        const { error } = await (supabase.rpc as any)('increment_view_count', {
+            row_id: id,
+            table_name: 'posts'
+        })
+        if (error) {
+            console.error('Error incrementing post views:', error)
+        }
+    }
+
+    // Get top posts ordered by views (for trending page)
+    const getTopPosts = async (limit: number = 10): Promise<Post[]> => {
+        const { data, error } = await supabase
+            .from('posts')
+            .select('*')
+            .order('views', { ascending: false, nullsFirst: false })
+            .limit(limit)
+
+        if (error) {
+            console.error('Error fetching top posts:', error)
+            return []
+        }
+        return (data || []).map(transformPost)
+    }
+
     return {
         getLatestPosts,
         getAllPosts,
         getPostBySlug,
         getFeaturedPost,
-        getRelatedPosts
+        getRelatedPosts,
+        incrementViews,
+        getTopPosts
     }
 }
-
-

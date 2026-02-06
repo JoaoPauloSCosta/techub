@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRoute, useRuntimeConfig, showError } from '#imports'
 import { useSeoMeta } from '#imports'
 import ArticleHeader from '~/components/ArticleHeader.vue'
@@ -17,7 +17,7 @@ definePageMeta({
 })
 
 const route = useRoute()
-const { getPostBySlug, getRelatedPosts } = usePosts()
+const { getPostBySlug, getRelatedPosts, incrementViews } = usePosts()
 
 // Get slug from route
 const slug = computed<string>(() => route.params.slug as string)
@@ -35,6 +35,13 @@ if (!article.value) {
     statusMessage: 'Artigo não encontrado'
   })
 }
+
+// Increment view count (client-side only to avoid SSR double-counting)
+onMounted(() => {
+  if (article.value?.id) {
+    incrementViews(article.value.id)
+  }
+})
 
 // Related articles
 const { data: relatedArticles } = await useAsyncData(

@@ -15,7 +15,8 @@ export function useJobs() {
         level: 'Pleno', // Default
         tags: row.tags || [],
         date: row.created_at,
-        url: row.apply_url
+        url: row.apply_url,
+        views: row.views || 0
     })
 
     const getAllJobs = async (): Promise<Job[]> => {
@@ -90,12 +91,40 @@ export function useJobs() {
         return transformJob(data)
     }
 
+    // Increment view counter for a job (calls Supabase RPC)
+    const incrementViews = async (id: string): Promise<void> => {
+        // Type assertion needed because custom RPC function isn't in generated Supabase types
+        const { error } = await (supabase.rpc as any)('increment_view_count', {
+            row_id: id,
+            table_name: 'jobs'
+        })
+        if (error) {
+            console.error('Error incrementing job views:', error)
+        }
+    }
+
+    // Get top jobs ordered by views (for trending page)
+    const getTopJobs = async (limit: number = 10): Promise<Job[]> => {
+        const { data, error } = await supabase
+            .from('jobs')
+            .select('*')
+            .order('views', { ascending: false, nullsFirst: false })
+            .limit(limit)
+
+        if (error) {
+            console.error('Error fetching top jobs:', error)
+            return []
+        }
+        return (data || []).map(transformJob)
+    }
+
     return {
         getAllJobs,
         getJobs,
         filterByTag,
         getRemoteJobs,
-        getJobById
+        getJobById,
+        incrementViews,
+        getTopJobs
     }
 }
-

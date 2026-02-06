@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useHead } from '#imports'
 import { useTheme } from './composables/useTheme'
+import CookieBanner from './components/CookieBanner.vue'
 
 const { isDark } = useTheme()
 
@@ -63,6 +64,11 @@ useHead({
         <NuxtPage />
       </NuxtLayout>
     </div>
+
+    <!-- LGPD Cookie Consent Banner (Client-Side Only) -->
+    <ClientOnly>
+      <CookieBanner />
+    </ClientOnly>
   </div>
 </template>
 

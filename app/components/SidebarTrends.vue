@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { ChartBarIcon, ArrowTrendingUpIcon } from '@heroicons/vue/24/solid'
+import { useTrending } from '~/composables/useTrending'
 import type { TrendingTopic } from '../../shared/types'
 
-interface Props {
-  topics: TrendingTopic[]
-}
+const { fetchTrending } = useTrending()
 
-defineProps<Props>()
+// Fetch trending topics from Supabase (real data)
+const { data: topics, pending } = await useAsyncData<TrendingTopic[]>(
+  'sidebar-trending',
+  () => fetchTrending(5),
+  { default: () => [] }
+)
 
 const formatViews = (views: number): string => {
   if (views >= 1000000) {
@@ -43,19 +47,41 @@ const getRankStyle = (index: number): string => {
       </div>
       <div>
         <h3 class="text-lg font-bold text-gray-900 dark:text-text-primary">Trending</h3>
-        <p class="text-gray-500 dark:text-text-muted text-xs">Últimas 24h</p>
+        <p class="text-gray-500 dark:text-text-muted text-xs">Mais lidos</p>
       </div>
     </div>
 
+    <!-- Loading State -->
+    <div v-if="pending" class="space-y-3">
+      <div v-for="i in 5" :key="i" class="flex items-center gap-3 p-3 animate-pulse">
+        <div class="w-7 h-7 bg-gray-200 dark:bg-dark-hover rounded"></div>
+        <div class="flex-1 space-y-2">
+          <div class="h-4 bg-gray-200 dark:bg-dark-hover rounded w-3/4"></div>
+          <div class="h-3 bg-gray-200 dark:bg-dark-hover rounded w-1/2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div v-else-if="!topics || topics.length === 0" class="py-8 text-center">
+      <div class="text-4xl mb-3">🚀</div>
+      <p class="text-gray-500 dark:text-text-muted text-sm font-medium">
+        Seja o primeiro a ler algo!
+      </p>
+      <p class="text-gray-400 dark:text-text-muted/70 text-xs mt-1">
+        Nenhum artigo com visualizações ainda.
+      </p>
+    </div>
+
     <!-- Topics List -->
-    <div class="space-y-2">
-      <a
+    <div v-else class="space-y-2">
+      <NuxtLink
         v-for="(topic, index) in topics.slice(0, 5)"
         :key="topic.id"
         v-motion
         :initial="{ opacity: 0, x: -10 }"
         :enter="{ opacity: 1, x: 0, transition: { delay: 250 + index * 60 } }"
-        href="#"
+        :to="`/articles/${(topic as any).slug || topic.id}`"
         class="flex items-center gap-3 p-3 rounded hover:bg-gray-100 dark:hover:bg-dark-hover transition-all duration-200 group"
       >
         <!-- Ranking Number -->
@@ -78,15 +104,15 @@ const getRankStyle = (index: number): string => {
             <span>{{ formatViews(topic.views) }} views</span>
           </div>
         </div>
-      </a>
+      </NuxtLink>
     </div>
 
     <!-- See All Link -->
-    <a
-      href="/trending"
+    <NuxtLink
+      to="/trending"
       class="block text-center text-primary text-sm font-medium hover:text-primary-light mt-5 py-2.5 border border-gray-200 dark:border-dark-border hover:border-primary/50 rounded transition-all duration-200"
     >
       Ver todos os trending →
-    </a>
+    </NuxtLink>
   </div>
 </template>

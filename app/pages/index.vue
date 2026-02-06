@@ -5,7 +5,7 @@ import { useSeoMeta } from '#imports'
 import { usePosts } from '~/composables/usePosts'
 import { useVideos } from '~/composables/useVideos'
 import { useJobs } from '~/composables/useJobs'
-import { useTrending } from '~/composables/useTrending'
+
 import HeroFeatured from '~/components/HeroFeatured.vue'
 import PostCard from '~/components/PostCard.vue'
 import VideoCard from '~/components/VideoCard.vue'
@@ -20,7 +20,7 @@ const route = useRoute()
 const { getAllPosts } = usePosts()
 const { getAllVideos } = useVideos()
 const { getAllJobs } = useJobs()
-const { getTrending } = useTrending()
+
 
 // Async fetch for Posts (Supabase)
 const { data: dbPosts } = await useAsyncData('posts', () => getAllPosts())
@@ -32,7 +32,7 @@ const allPosts = computed(() => dbPosts.value || [])
 const allVideos = computed(() => dbVideos.value || [])
 const allJobs = computed(() => dbJobs.value || [])
 
-const trendingTopics = getTrending()
+
 
 // --- 1. Topic Detection ---
 const currentTopic = computed(() => {
@@ -221,7 +221,7 @@ definePageMeta({
           
           <div v-if="filteredContent.posts.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <PostCard
-              v-for="(post, index) in filteredContent.posts"
+              v-for="(post, index) in filteredContent.posts.slice(0, 15)"
               :key="post.id"
               :post="post"
               :index="index"
@@ -230,9 +230,21 @@ definePageMeta({
           <div v-else class="py-12 text-center border-2 border-dashed border-gray-100 dark:border-dark-border rounded-xl">
              <p class="text-gray-500">Nenhum artigo encontrado para este filtro.</p>
           </div>
+
+          <!-- Ver Mais Button -->
+          <div v-if="filteredContent.posts.length > 15" class="flex justify-center mt-10">
+            <NuxtLink
+              to="/articles"
+              class="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium text-gray-700 dark:text-text-secondary bg-transparent border border-gray-300 dark:border-dark-border rounded-full hover:bg-gray-100 dark:hover:bg-dark-hover hover:border-primary/50 dark:hover:border-primary/50 hover:text-primary transition-all duration-200"
+            >
+              Ver mais notícias
+              <span class="text-lg">→</span>
+            </NuxtLink>
+          </div>
         </section>
 
-        <NewsletterBox />
+        <!-- Newsletter temporariamente oculta - remover v-if="false" quando implementar -->
+        <NewsletterBox v-if="false" />
 
         <!-- Videos Section -->
         <section v-if="filteredContent.videos.length > 0 || !currentTopic">
@@ -258,7 +270,7 @@ definePageMeta({
 
       <!-- Sidebar -->
       <aside class="lg:col-span-4 space-y-12">
-        <SidebarTrends :topics="trendingTopics" />
+        <SidebarTrends />
         
         <!-- Jobs Widget -->
         <div v-if="filteredContent.jobs.length > 0 || !currentTopic">

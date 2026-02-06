@@ -23,7 +23,7 @@ const { isDark, toggleTheme } = useTheme()
 
 const menuItems = [
   { label: 'Notícias', href: '/articles' },
-  { label: 'Tutoriais', href: '/tutorials' },
+  // { label: 'Tutoriais', href: '/tutorials' }, // Hidden temporarily
   { label: 'Vídeos', href: '/videos' },
   { label: 'Vagas', href: '/jobs' }
 ]
@@ -98,8 +98,9 @@ const toggleMenu = (): void => {
             <MoonIcon v-else class="w-5 h-5" />
           </button>
           
-          <!-- Sign In Button -->
+          <!-- Sign In Button (Hidden temporarily) -->
           <a
+            v-if="false"
             href="/login"
             class="px-5 py-2 bg-primary hover:bg-primary-hover text-white dark:text-dark-bg text-sm font-semibold rounded-lg transition-all duration-200 press-effect"
           >
@@ -180,7 +181,9 @@ const toggleMenu = (): void => {
           >
             {{ item.label }}
           </a>
+          <!-- Hidden temporarily -->
           <a
+            v-if="false"
             href="/login"
             class="block px-4 py-3 mt-2 bg-primary text-white dark:text-dark-bg text-center font-semibold rounded-lg"
           >

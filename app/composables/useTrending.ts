@@ -1,52 +1,39 @@
-import type { TrendingTopic } from '#shared/types'
-
-// TODO: Replace mock data with useFetch() API calls
-
-const mockTrending: TrendingTopic[] = [
-    {
-        id: 't1',
-        title: 'Nuxt 4 Release',
-        views: 45200,
-        category: 'Nuxt'
-    },
-    {
-        id: 't2',
-        title: 'GPT-5 para Developers',
-        views: 38700,
-        category: 'IA'
-    },
-    {
-        id: 't3',
-        title: 'Vue 3.5 Performance',
-        views: 28400,
-        category: 'Vue.js'
-    },
-    {
-        id: 't4',
-        title: 'Vagas Remotas Brasil',
-        views: 22100,
-        category: 'Vagas'
-    },
-    {
-        id: 't5',
-        title: 'Laravel 12 Preview',
-        views: 19800,
-        category: 'PHP'
-    }
-]
+import type { TrendingTopic } from '../../shared/types'
 
 /**
- * Composable for fetching trending topics
+ * Composable for fetching real trending topics from Supabase
+ * Queries the 'posts' table ordered by views (descending)
  */
 export function useTrending() {
+    const supabase = useSupabaseClient()
+
     /**
-     * Get trending topics
+     * Fetch trending topics from Supabase (real data)
+     * @param limit - Maximum number of topics to return (default: 5)
      */
-    const getTrending = (limit: number = 5): TrendingTopic[] => {
-        return mockTrending.slice(0, limit)
+    const fetchTrending = async (limit: number = 5): Promise<TrendingTopic[]> => {
+        const { data, error } = await supabase
+            .from('posts')
+            .select('id, title, slug, views, type')
+            .order('views', { ascending: false, nullsFirst: false })
+            .limit(limit)
+
+        if (error) {
+            console.error('Error fetching trending topics:', error)
+            return []
+        }
+
+        // Transform Supabase rows to TrendingTopic format
+        return (data || []).map((row: any) => ({
+            id: row.id,
+            title: row.title,
+            views: row.views || 0,
+            category: row.type === 'tutorial' ? 'Tutorial' : 'Artigo',
+            slug: row.slug
+        }))
     }
 
     return {
-        getTrending
+        fetchTrending
     }
 }
