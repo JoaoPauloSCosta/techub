@@ -209,7 +209,7 @@ const lastUpdate = '05 de Fevereiro de 2026'
           </h2>
           <p class="text-gray-600 dark:text-text-secondary leading-relaxed">
             Em caso de dúvidas sobre esta Política de Privacidade ou para exercer seus direitos previstos na LGPD, 
-            entre em contato pelo e-mail: <strong class="text-primary">privacidade@techhub.com.br</strong>
+            entre em contato pela nossa <a href="https://techub-bay.vercel.app/contact" class="text-primary hover:underline font-semibold">página de contato</a>
           </p>
           <p class="text-gray-600 dark:text-text-secondary leading-relaxed mt-2">
             O responsável pelo tratamento de dados pessoais no TechHub é <strong class="text-gray-900 dark:text-text-primary">João Paulo Costa</strong>.
