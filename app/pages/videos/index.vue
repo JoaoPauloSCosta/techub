@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useSeoMeta } from '#imports'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import VideoCard from '~/components/VideoCard.vue'
 import VideoPlayerModal from '~/components/VideoPlayerModal.vue'
 import { useVideos } from '~/composables/useVideos'
-import { MagnifyingGlassIcon, PlayCircleIcon, FilmIcon } from '@heroicons/vue/24/outline'
+import { MagnifyingGlassIcon, PlayCircleIcon, FilmIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
 import type { Video } from '#shared/types'
 
 // SEO Meta
@@ -22,10 +22,41 @@ definePageMeta({
   layout: 'default-layout'
 })
 
+// Pagination state
+const currentPage = ref(1)
+const itemsPerPage = 9
+const totalVideos = ref(0)
+
 // Data from composables
-const { getAllVideos } = useVideos()
-const { data: dbVideos } = await useAsyncData('videos-page', () => getAllVideos())
-const allVideos = computed(() => dbVideos.value || [])
+const { getVideosPaginated } = useVideos()
+
+const { data: paginatedData, refresh } = await useAsyncData(
+  'videos-page',
+  () => getVideosPaginated(currentPage.value, itemsPerPage),
+  { watch: [currentPage] }
+)
+
+// Computed values
+const allVideos = computed(() => paginatedData.value?.videos || [])
+const totalPages = computed(() => Math.ceil((paginatedData.value?.total || 0) / itemsPerPage))
+
+// Watch for page changes to scroll to top
+watch(currentPage, () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+})
+
+// Pagination handlers
+const goToPreviousPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--
+  }
+}
+
+const goToNextPage = () => {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++
+  }
+}
 
 // Search and filter state
 const searchQuery = ref('')
@@ -178,6 +209,51 @@ const handleVideoModalClose = () => {
             @play="handleVideoPlay"
           />
         </div>
+
+        <!-- Pagination Navigation -->
+        <nav
+          v-if="totalPages > 1"
+          v-motion
+          :initial="{ opacity: 0, y: 20 }"
+          :enter="{ opacity: 1, y: 0, transition: { delay: 200 } }"
+          aria-label="Navegação de páginas"
+          class="flex items-center justify-center gap-4 mt-10"
+        >
+          <!-- Previous Button -->
+          <button
+            :disabled="currentPage === 1"
+            :class="[
+              'flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200',
+              currentPage === 1
+                ? 'bg-gray-100 dark:bg-dark-hover text-gray-400 dark:text-text-muted cursor-not-allowed'
+                : 'bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border text-gray-700 dark:text-text-secondary hover:border-primary hover:text-primary'
+            ]"
+            @click="goToPreviousPage"
+          >
+            <ChevronLeftIcon class="w-5 h-5" />
+            <span class="hidden sm:inline">Anterior</span>
+          </button>
+
+          <!-- Page Indicator -->
+          <span class="text-sm text-gray-600 dark:text-text-secondary font-medium">
+            Página <span class="text-primary">{{ currentPage }}</span> de <span class="text-primary">{{ totalPages }}</span>
+          </span>
+
+          <!-- Next Button -->
+          <button
+            :disabled="currentPage >= totalPages"
+            :class="[
+              'flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200',
+              currentPage >= totalPages
+                ? 'bg-gray-100 dark:bg-dark-hover text-gray-400 dark:text-text-muted cursor-not-allowed'
+                : 'bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border text-gray-700 dark:text-text-secondary hover:border-primary hover:text-primary'
+            ]"
+            @click="goToNextPage"
+          >
+            <span class="hidden sm:inline">Próximo</span>
+            <ChevronRightIcon class="w-5 h-5" />
+          </button>
+        </nav>
 
         <!-- Empty State -->
         <div
