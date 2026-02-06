@@ -43,6 +43,36 @@ export function useVideos() {
         return (data || []).map(transformVideo)
     }
 
+    const getVideosPaginated = async (page: number = 1, limit: number = 9, search?: string): Promise<{ videos: Video[], total: number }> => {
+        const from = (page - 1) * limit
+        const to = from + limit - 1
+
+        // Build query with correct order: filter → order → pagination
+        let query = supabase
+            .from('videos')
+            .select('*', { count: 'exact' })
+
+        // Apply search filter if provided
+        if (search && search.trim()) {
+            query = query.ilike('title', `%${search.trim()}%`)
+        }
+
+        // Apply ordering and pagination
+        const { data, error, count } = await query
+            .order('published_at', { ascending: false })
+            .range(from, to)
+
+        if (error) {
+            console.error('Error fetching paginated videos:', error)
+            return { videos: [], total: 0 }
+        }
+
+        return {
+            videos: (data || []).map(transformVideo),
+            total: count || 0
+        }
+    }
+
     const getVideosByTag = async (tag: string): Promise<Video[]> => {
         const { data, error } = await supabase
             .from('videos')
@@ -71,6 +101,7 @@ export function useVideos() {
     return {
         getVideos,
         getAllVideos,
+        getVideosPaginated,
         getVideosByTag,
         getVideoById
     }
