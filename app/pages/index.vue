@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useSeoMeta } from '#imports'
+import { useSeoMeta, useHead } from '#imports'
 import { usePosts } from '~/composables/usePosts'
 import { useVideos } from '~/composables/useVideos'
 import { useJobs } from '~/composables/useJobs'
+import { useOrganizationSchema, useWebSiteSchema, useBreadcrumbSchema } from '~/composables/useSchema'
 
 import HeroFeatured from '~/components/HeroFeatured.vue'
 import PostCard from '~/components/PostCard.vue'
@@ -168,6 +169,30 @@ const filteredContent = computed(() => {
 useSeoMeta({
   title: topicConfig.value ? `${topicConfig.value.title} | TechHub` : 'TechHub - O ponto de encontro dev',
   description: topicConfig.value?.subtitle || 'Notícias, tutoriais e vagas para desenvolvedores.',
+})
+
+// --- Schema.org JSON-LD ---
+const organizationSchema = useOrganizationSchema()
+const websiteSchema = useWebSiteSchema()
+const breadcrumbSchema = useBreadcrumbSchema([
+  { name: 'Home', url: '/' }
+])
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(organizationSchema)
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(websiteSchema)
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(breadcrumbSchema)
+    }
+  ]
 })
 
 definePageMeta({

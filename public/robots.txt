@@ -1,2 +1,13 @@
-User-Agent: *
-Disallow:
+# TechHub - Robots.txt
+# Foco: Brasil (pt-BR)
+
+User-agent: *
+Allow: /
+
+# Páginas não indexáveis (LGPD e Funcionalidade)
+Disallow: /contact
+Disallow: /terms
+Disallow: /privacy
+
+# Sitemap
+Sitemap: https://techhub.com.br/api/sitemap

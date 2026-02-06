@@ -7,7 +7,8 @@ const { openDetails } = useConsent()
 
 useSeoMeta({
   title: 'Política de Privacidade - TechHub',
-  description: 'Saiba como o TechHub coleta, utiliza e protege seus dados pessoais em conformidade com a LGPD (Lei Geral de Proteção de Dados).'
+  description: 'Saiba como o TechHub coleta, utiliza e protege seus dados pessoais em conformidade com a LGPD (Lei Geral de Proteção de Dados).',
+  robots: 'noindex, nofollow' // Não indexar esta página
 })
 
 // Última atualização da política

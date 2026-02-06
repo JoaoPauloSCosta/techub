@@ -89,6 +89,7 @@ const submitForm = async () => {
 useSeoMeta({
   title: 'Fale Conosco | TechHub',
   description: 'Entre em contato com a equipe do TechHub.',
+  robots: 'noindex, nofollow' // Não indexar esta página
 })
 </script>
 

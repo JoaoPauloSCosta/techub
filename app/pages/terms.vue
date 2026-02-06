@@ -12,7 +12,8 @@ import {
 
 useSeoMeta({
   title: 'Termos de Uso - TechHub',
-  description: 'Leia os Termos de Uso do TechHub. Regras, isenção de responsabilidade e direitos autorais.'
+  description: 'Leia os Termos de Uso do TechHub. Regras, isenção de responsabilidade e direitos autorais.',
+  robots: 'noindex, nofollow' // Não indexar esta página
 })
 
 // Última atualização

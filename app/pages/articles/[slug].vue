@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
 import { useRoute, useRuntimeConfig, showError } from '#imports'
-import { useSeoMeta } from '#imports'
+import { useSeoMeta, useHead } from '#imports'
 import ArticleHeader from '~/components/ArticleHeader.vue'
 import ArticleBody from '~/components/ArticleBody.vue'
 import TableOfContents from '~/components/TableOfContents.vue'
@@ -10,6 +10,7 @@ import AuthorCard from '~/components/AuthorCard.vue'
 import RelatedArticles from '~/components/RelatedArticles.vue'
 import { ArrowLeftIcon } from '@heroicons/vue/24/outline'
 import { usePosts } from '~/composables/usePosts'
+import { useArticleSchema, useBreadcrumbSchema } from '~/composables/useSchema'
 
 // Define layout
 definePageMeta({
@@ -75,6 +76,29 @@ useSeoMeta({
   twitterDescription: computed(() => article.value?.excerpt || ''),
   twitterImage: computed(() => article.value?.image || '')
 })
+
+// Schema.org JSON-LD (somente se artigo existe)
+if (article.value) {
+  const articleSchema = useArticleSchema(article.value)
+  const breadcrumbSchema = useBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Artigos', url: '/articles' },
+    { name: article.value.title, url: `/articles/${article.value.slug}` }
+  ])
+  
+  useHead({
+    script: [
+      {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify(articleSchema)
+      },
+      {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify(breadcrumbSchema)
+      }
+    ]
+  })
+}
 </script>
 
 <template>
