@@ -25,14 +25,33 @@ definePageMeta({
 // Pagination state
 const currentPage = ref(1)
 const itemsPerPage = 9
-const totalVideos = ref(0)
+
+// Search and filter state
+const searchQuery = ref('')
+const debouncedSearch = ref('')
+const selectedCategory = ref('Todos')
+
+// Debounce timer
+let searchTimeout: ReturnType<typeof setTimeout> | null = null
+
+// Watch searchQuery with debounce (400ms)
+watch(searchQuery, (newValue) => {
+  if (searchTimeout) {
+    clearTimeout(searchTimeout)
+  }
+  searchTimeout = setTimeout(() => {
+    debouncedSearch.value = newValue
+    currentPage.value = 1 // Reset to page 1 on search change
+    refresh()
+  }, 400)
+})
 
 // Data from composables
 const { getVideosPaginated } = useVideos()
 
 const { data: paginatedData, refresh } = await useAsyncData(
   'videos-page',
-  () => getVideosPaginated(currentPage.value, itemsPerPage),
+  () => getVideosPaginated(currentPage.value, itemsPerPage, debouncedSearch.value),
   { watch: [currentPage] }
 )
 
@@ -58,10 +77,6 @@ const goToNextPage = () => {
   }
 }
 
-// Search and filter state
-const searchQuery = ref('')
-const selectedCategory = ref('Todos')
-
 // Category definitions with their associated tags
 const categories = [
   { id: 'todos', label: 'Todos', tags: [] },
@@ -72,19 +87,11 @@ const categories = [
   { id: 'vibe-coding', label: 'Vibe Coding', tags: ['Vibe Coding'] }
 ]
 
-// Filtered videos based on search and category
+// Filtered videos based on category (search is now backend)
 const filteredVideos = computed(() => {
   let result = allVideos.value
 
-  // Filter by search query
-  if (searchQuery.value.trim()) {
-    const query = searchQuery.value.toLowerCase().trim()
-    result = result.filter(video =>
-      video.title.toLowerCase().includes(query)
-    )
-  }
-
-  // Filter by category
+  // Filter by category (frontend filter for tags)
   if (selectedCategory.value !== 'Todos') {
     const category = categories.find(c => c.label === selectedCategory.value)
     if (category && category.tags.length > 0) {
