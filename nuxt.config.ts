@@ -11,6 +11,10 @@ export default defineNuxtConfig({
     redirect: false
   },
 
+  runtimeConfig: {
+    resendApiKey: process.env.RESEND_API_KEY
+  },
+
 
   // Motion module configuration
   motion: {
