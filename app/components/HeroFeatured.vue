@@ -23,7 +23,7 @@ const formattedDate = computed(() => formatDate(props.post.date))
     class="block relative rounded-lg overflow-hidden group cursor-pointer"
   >
     <!-- Background Image with parallax-like effect -->
-    <div class="aspect-[16/9] md:aspect-[21/9] w-full overflow-hidden">
+    <div class="h-64 md:h-auto md:aspect-[21/9] w-full overflow-hidden">
       <img
         :src="post.image"
         :alt="post.title"
@@ -39,24 +39,24 @@ const formattedDate = computed(() => formatDate(props.post.date))
     <div class="absolute inset-0 border border-transparent group-hover:border-primary/20 rounded-lg transition-all duration-500"></div>
 
     <!-- Content -->
-    <div class="absolute bottom-0 left-0 right-0 p-6 md:p-10">
+    <div class="absolute bottom-0 left-0 right-0 p-4 md:p-10 break-words">
       <!-- Category Badge - Sharp style -->
       <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary text-dark-bg text-xs font-bold uppercase tracking-wider rounded mb-4 shadow-glow">
         {{ post.category }}
       </span>
 
       <!-- Title with text gradient on hover -->
-      <h1 class="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-4 line-clamp-2 leading-tight group-hover:text-primary transition-colors duration-300">
+      <h1 class="text-xl md:text-4xl lg:text-5xl font-bold text-white mb-2 md:mb-4 line-clamp-2 leading-snug md:leading-tight group-hover:text-primary transition-colors duration-300">
         {{ post.title }}
       </h1>
 
       <!-- Excerpt -->
-      <p class="text-gray-200 text-base md:text-lg mb-6 line-clamp-2 max-w-3xl">
+      <p class="text-gray-200 text-sm md:text-lg mb-4 md:mb-6 line-clamp-2 max-w-3xl">
         {{ post.excerpt }}
       </p>
 
       <!-- Meta Info Row -->
-      <div class="flex items-center gap-6 flex-wrap">
+      <div class="flex items-center gap-3 md:gap-6 flex-wrap">
         <!-- Author -->
         <div class="flex items-center gap-3">
           <div class="relative">
