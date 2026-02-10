@@ -1,6 +1,6 @@
 from openai import OpenAI
 import os
-import json
+import json_repair
 import config
 
 class ContentGenerator:
@@ -79,7 +79,7 @@ class ContentGenerator:
             if content_raw.startswith("```json"):
                 content_raw = content_raw.replace("```json", "").replace("```", "")
             
-            article_data = json.loads(content_raw)
+            article_data = json_repair.loads(content_raw)
             return article_data
 
         except Exception as e:

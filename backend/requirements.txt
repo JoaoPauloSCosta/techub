@@ -6,3 +6,4 @@ openai
 pillow
 feedparser
 google-genai
+json_repair
