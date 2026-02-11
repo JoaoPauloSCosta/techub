@@ -14,7 +14,9 @@ class VideoScraper:
             {"name": "Nuxt", "id": "UCnC8M_x58m4eazr_4C1-NMg"},
             {"name": "Matheus | IA Coding", "id": "UCpuJeRIQ_MySvluzBLFT2Pw"},
             {"name": "Helio Arreche", "id": "UCIhBhRpaWD3-n8YKZcEtR6Q"},
-            {"name": "AI Coders Academy", "id": "UCB0zxJZkEkb7TH6DdS-Fe_A"}
+            {"name": "AI Coders Academy", "id": "UCB0zxJZkEkb7TH6DdS-Fe_A"},
+            {"name": "Rafael Melgaço", "id": "UCfBVodXGLNd32NzMWm-N2mA"},
+            {"name": "DATA7 Apps", "id": "UCtA8JcGCTnqXMtJ9Kd516aw"}
         ]
 
     def _get_tags(self, title, channel_name):
@@ -45,7 +47,7 @@ class VideoScraper:
         # 3. Automações (N8N, Automation)
         if match_keywords(['n8n', 'automação', 'automacao', 'automation', 'make', 'zapier', 'workflow'], title_lower):
             tags.append('Automações')
-        elif channel_name in ['Luciana Papini', 'Enzo Sparo', 'Helio Arreche']:
+        elif channel_name in ['Luciana Papini', 'Enzo Sparo', 'Helio Arreche', 'Rafael Melgaço']:
              # Enzo and Helio talk a lot about AI too, so check simple overlap
             tags.append('Automações')
 
