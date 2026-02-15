@@ -2,8 +2,8 @@ name: Daily Automation
 
 on:
   schedule:
-    # Runs at 11:00 UTC (08:00 AM Brazil/São Paulo UTC-3)
-    - cron: '0 11 * * *'
+    # Runs at 11:00 UTC (08:00 AM Brazil/São Paulo UTC-3), Mon-Fri only
+    - cron: '0 11 * * 1-5'
   workflow_dispatch:
     # Allows manual trigger from GitHub Actions UI
 

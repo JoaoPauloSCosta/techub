@@ -1,5 +1,6 @@
 from supabase import create_client
 import config
+import random
 from modules.scraper import Scraper
 from modules.writer import ContentGenerator
 from modules.visuals import VisualGenerator
@@ -22,8 +23,10 @@ def run_article_pipeline(supabase):
             print("📭 Nenhum artigo NOVO encontrado.")
             return
 
-        target_news = articles_found[0]
-        print(f"\n🎯 Notícia selecionada: {target_news['title']}")
+        target_news = random.choice(articles_found)
+        print(f"\n🎲 Seleção aleatória entre {len(articles_found)} artigos disponíveis.")
+        print(f"🎯 Notícia selecionada: {target_news['title']}")
+        print(f"   📂 Fonte: {target_news.get('source', 'N/A')}")
 
         writer = ContentGenerator()
         article_data = writer.generate_article(target_news)
