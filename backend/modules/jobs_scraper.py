@@ -1,6 +1,7 @@
 import requests
 import datetime
 import random
+import re
 import feedparser
 from dateutil import parser as date_parser
 import time
@@ -45,7 +46,11 @@ class JobScraper:
         print("🌍 Buscando RemoteOK...")
         all_jobs.extend(self._fetch_remoteok(limit=5))
         
-        # 2. Fetch from RSS Feeds
+        # 2. Fetch from Howdy Latam (HTML Scraping)
+        print("🌎 Buscando Howdy Latam...")
+        all_jobs.extend(self._fetch_howdy_latam(limit=10))
+        
+        # 3. Fetch from RSS Feeds
         for source in self.rss_sources:
             print(f"📡 Buscando {source['name']} RSS...")
             feed_jobs = self._fetch_rss(source, limit=5)
@@ -155,8 +160,108 @@ class JobScraper:
             print(f"   ❌ Erro {source['name']}: {e}")
             return []
 
+    def _fetch_howdy_latam(self, limit=10):
+        """Scrapes job listings from Howdy Latam opportunities page."""
+        try:
+            url = "https://www.howdylatam.com/oportunidades"
+            response = requests.get(url, headers=self.headers, timeout=15)
+            if response.status_code != 200:
+                print(f"   ⚠️ Howdy Latam falhou: {response.status_code}")
+                return []
+
+            html = response.text
+            # Extract all job links: /oportunidades/{slug}
+            raw_links = re.findall(
+                r'/oportunidades/([a-z0-9][a-z0-9\-]+[a-z0-9])(?="|\?)',
+                html, re.IGNORECASE
+            )
+
+            # Deduplicate while preserving order
+            seen = set()
+            slugs = []
+            for slug in raw_links:
+                if slug not in seen:
+                    seen.add(slug)
+                    slugs.append(slug)
+
+            jobs = []
+            for slug in slugs:
+                if len(jobs) >= limit:
+                    break
+
+                title, location = self._parse_howdy_slug(slug)
+                if not title:
+                    continue
+
+                job = {
+                    "title": title,
+                    "company": "Howdy Latam",
+                    "location": location,
+                    "salary": "A combinar",
+                    "apply_url": f"https://www.howdylatam.com/oportunidades/{slug}",
+                    "tags": self._infer_tags(title),
+                    "created_at": datetime.datetime.now().isoformat()
+                }
+                jobs.append(job)
+
+            return jobs
+        except Exception as e:
+            print(f"   ❌ Erro Howdy Latam: {e}")
+            return []
+
+    def _parse_howdy_slug(self, slug):
+        """Parses a Howdy Latam URL slug into (title, location)."""
+        # Remove Salesforce ID suffix (e.g. a1ZTQ00000JH6se2AD)
+        cleaned = re.sub(r'-a1Z[A-Za-z0-9]+$', '', slug)
+        if not cleaned:
+            return None, None
+
+        # Known location patterns at the end of slugs
+        location = "Remoto"
+        location_match = re.search(
+            r'-((?:guadalajara|bogota|cdmx|mexico-city|medellin|lima|'
+            r'santiago|buenos-aires|montevideo|sao-paulo|remote)'
+            r'(?:---?(?:mx|co|br|ar|uy|pe|cl|mex))?)$',
+            cleaned, re.IGNORECASE
+        )
+        if location_match:
+            raw_loc = location_match.group(1)
+            cleaned = cleaned[:location_match.start()]
+            # Format location nicely
+            location = raw_loc.replace('---', ', ').replace('-', ' ').title()
+
+        title = cleaned.replace('-', ' ').strip().title()
+        return title, location
+
+    def _infer_tags(self, title):
+        """Infers technology tags from a job title."""
+        tag_map = {
+            'golang': 'Go', 'go ': 'Go', 'python': 'Python',
+            'node': 'Node.js', 'nodejs': 'Node.js',
+            'react': 'React', 'reactjs': 'React',
+            'vue': 'Vue.js', 'angular': 'Angular',
+            'java': 'Java', 'kotlin': 'Kotlin',
+            'devops': 'DevOps', 'sre': 'DevOps',
+            'data': 'Data', 'machine learning': 'ML',
+            'fullstack': 'Full Stack', 'full stack': 'Full Stack',
+            'frontend': 'Frontend', 'front end': 'Frontend',
+            'backend': 'Backend', 'back end': 'Backend',
+            'qa': 'QA', 'quality': 'QA', 'testing': 'QA',
+            'ios': 'iOS', 'swift': 'iOS',
+            'android': 'Android',
+            'aws': 'AWS', 'cloud': 'Cloud',
+            'typescript': 'TypeScript',
+        }
+        title_lower = title.lower()
+        tags = []
+        seen = set()
+        for keyword, tag in tag_map.items():
+            if keyword in title_lower and tag not in seen:
+                tags.append(tag)
+                seen.add(tag)
+        return tags if tags else ['Tech']
+
     def _format_salary(self, min_sal, max_sal):
         if not min_sal or not max_sal:
             return "A combinar"
         return f"${min_sal/1000}k - ${max_sal/1000}k"
- 

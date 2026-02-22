@@ -24,6 +24,7 @@ def test_scraper():
             elif "remote.co" in job['apply_url']: src = "Remote.co"
             elif "python.org" in job['apply_url']: src = "Python.org"
             elif "remoteok" in job['apply_url'] or "remoteok" in str(job).lower(): src = "RemoteOK"
+            elif "howdylatam" in job['apply_url']: src = "Howdy Latam"
             else: src = "Outro"
             
             sources[src] = sources.get(src, 0) + 1
